@@ -1,4 +1,26 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsString, ValidateNested, ArrayNotEmpty } from "class-validator";
+import { Type } from "class-transformer";
+
+export class CreateAlternativeDto {
+  @IsString()
+  label: string;
+  
+  @IsNumber()
+  value: number
+}
+
+export class CreateQuestionDto {
+  @IsString()
+  pregunta: string;
+
+  @IsArray()
+  @ValidateNested({each: true})
+  @Type(() => CreateAlternativeDto)
+  alternativa: CreateAlternativeDto[];
+
+  @IsNumber()
+  respuesta_correcta: number
+}
 
 export class CreateTalesDto {
   @IsOptional()
@@ -8,8 +30,9 @@ export class CreateTalesDto {
   @IsString()
   titulo: string;
  
-  @IsString()
-  contenido: string;
+  @IsArray()
+  @IsString({each: true})
+  contenido: string[];
 
   @IsString()
   dificultad: string;
@@ -20,6 +43,9 @@ export class CreateTalesDto {
   @IsString()
   autor: string;
 
-  @IsString()
-  preguntas: string;
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({each: true})
+  @Type(() => CreateQuestionDto)
+  preguntas: CreateQuestionDto[];
 }

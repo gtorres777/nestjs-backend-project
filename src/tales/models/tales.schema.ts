@@ -1,5 +1,29 @@
 import { Schema } from 'mongoose'
 
+
+export const AlternativeSchema = new Schema({
+  label: {
+    type: String,
+    required: true
+  },
+  value: {
+    type: Number,
+    required: true
+  }
+})
+
+export const QuestionSchema = new Schema({
+  pregunta: {
+    type: String,
+    required: true
+  },
+  alternativa: [AlternativeSchema],
+  respuesta_correcta: {
+    type: Number,
+    required: true
+  }
+})
+
 export const TalesSchema = new Schema({
   titulo: {
     type: String,
@@ -7,7 +31,7 @@ export const TalesSchema = new Schema({
     unique: true
   },
   contenido:{
-    type: String,
+    type: [String],
     required: true,
   },
   dificultad:{
@@ -22,8 +46,5 @@ export const TalesSchema = new Schema({
     type:String,
     required: true
   },
-  preguntas:{
-    type:String,
-    required: true
-  }
+  preguntas: [QuestionSchema]
 },{ timestamps: true })

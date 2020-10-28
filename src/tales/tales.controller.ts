@@ -10,6 +10,7 @@ export class TalesController {
 
   @Post()
   addTales(@Body() data: CreateTalesDto): Promise<Tales> {
+    console.log(data)
     return this.talesService.addTales(data);
   }
 }
