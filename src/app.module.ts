@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ItemSchema } from './item.schema';
 import { UserModule } from './user/user.module';
+import { TalesModule } from './tales/tales.module';
 
 
 // const options : MongooseModuleOptions = {
@@ -19,7 +20,8 @@ import { UserModule } from './user/user.module';
         schema: ItemSchema
       }
     ]),
-    UserModule
+    UserModule,
+    TalesModule
   ],
   controllers: [AppController],
   providers: [AppService],
