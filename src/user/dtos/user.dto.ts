@@ -1,14 +1,22 @@
-import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator";
-import { SuscriptionState } from "../interface/user.interface";
-
+import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { SuscriptionState } from '../interface/user.interface';
 
 export class CreateUserDto {
   @IsOptional()
   @IsString()
   id: string;
 
+  @IsEmail()
+  email: string;
+
   @IsString()
-  nickname: string;
+  password: string;
+}
+
+export class CreateProfileUserDto {
+  @IsOptional()
+  @IsString()
+  id: string;
 
   @IsString()
   nombre: string;
@@ -16,17 +24,14 @@ export class CreateUserDto {
   @IsString()
   apellido: string;
 
-  @IsEmail()
-  email: string;
-
-  @IsString()
-  password: string;
-
   @IsString()
   @IsOptional()
   imagen: string;
 
+  @IsString()
+  _user: string;
+
   @IsEnum(SuscriptionState)
   @IsOptional()
-  suscription_state: SuscriptionState
+  suscription_state: SuscriptionState;
 }

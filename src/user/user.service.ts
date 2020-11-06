@@ -6,13 +6,14 @@ import { User } from './interface/user.interface';
 
 @Injectable()
 export class UserService {
-
-  constructor(
-    @InjectModel('User') private userModel: Model<User>
-  ) { }
+  constructor(@InjectModel('User') private userModel: Model<User>) {}
 
   async addUser(user: CreateUserDto): Promise<User> {
-    const createdUser = new this.userModel(user)
-    return await createdUser.save()
+    const createdUser = new this.userModel(user);
+    return await createdUser.save();
+  }
+
+  async findOne(user: string): Promise<User | undefined> {
+    return this.userModel.findOne({ nickname: user });
   }
 }

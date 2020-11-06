@@ -5,6 +5,7 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ItemSchema } from './item.schema';
 import { UserModule } from './user/user.module';
 import { TalesModule } from './tales/tales.module';
+import { AuthModule } from './auth/auth.module';
 
 
 // const options : MongooseModuleOptions = {
@@ -13,7 +14,7 @@ import { TalesModule } from './tales/tales.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongo/nestjs'),
+    MongooseModule.forRoot('mongodb://mongo/nestjs', {useFindAndModify: false}),
     MongooseModule.forFeature([
       {
         name: 'Item',
@@ -21,7 +22,8 @@ import { TalesModule } from './tales/tales.module';
       }
     ]),
     UserModule,
-    TalesModule
+    TalesModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

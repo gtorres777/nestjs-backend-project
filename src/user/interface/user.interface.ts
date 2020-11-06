@@ -1,18 +1,21 @@
-import { Document } from 'mongoose'
+import { Document } from 'mongoose';
 
 export enum SuscriptionState {
-  "active",
-  "inactive"
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
 }
 
 export interface User extends Document {
-  readonly id?: string;
-  readonly nickname: string;
-  readonly nombre: string;
-  readonly apellido: string;
   readonly email: string;
   readonly password: string;
-  readonly imagen?: string;
-  readonly suscriptionState: SuscriptionState
+  verifyPassword: (string) => Promise<boolean>;
 }
 
+export interface ProfileUser extends Document {
+  // readonly _id: string;
+  readonly nombre: string;
+  readonly apellido: string;
+  readonly imagen?: string;
+  readonly _user: string;
+  readonly suscriptionState: SuscriptionState;
+}
