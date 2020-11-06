@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateUserDto } from './dtos/user.dto';
-import { User } from './interface/user.interface';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreateProfileUserDto, CreateUserDto } from './dtos/user.dto';
+import { ProfileUser, User } from './interface/user.interface';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -10,8 +11,16 @@ export class UserController {
 
   @Post()
   addUser(@Body() data: CreateUserDto): Promise<User> {
-    console.log("@@@@", data)
     return this.userService.addUser(data);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("profile")
+  addProfile(
+    @Req() req,
+    @Body() data: CreateProfileUserDto
+  ) : Promise<ProfileUser> {
+    return this.userService.addProfile(data, req.user.userId);
   }
 
 

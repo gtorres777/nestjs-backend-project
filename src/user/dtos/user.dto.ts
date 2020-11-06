@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 import { SuscriptionState } from '../interface/user.interface';
 
@@ -6,6 +7,7 @@ export class CreateUserDto {
   @IsString()
   id: string;
 
+  @ApiProperty()
   @IsEmail()
   email: string;
 
@@ -28,6 +30,7 @@ export class CreateProfileUserDto {
   @IsOptional()
   imagen: string;
 
+  @IsOptional()
   @IsString()
   _user: string;
 

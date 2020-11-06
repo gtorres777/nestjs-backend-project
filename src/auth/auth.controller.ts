@@ -14,14 +14,14 @@ export class AuthController {
   @Post()
   async login(@Req() req) {
     console.log("controller")
-
     return this.authService.login(req.user)
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  hola() {
-    return "PERRA"
+  hola(@Req() req) {
+    console.log(req)
+    return this.authService.getProfile(req.user.userId)
   }
 
 }
