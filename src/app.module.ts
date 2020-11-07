@@ -1,32 +1,27 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
-import { ItemSchema } from './item.schema';
+import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { TalesModule } from './tales/tales.module';
 import { AuthModule } from './auth/auth.module';
-
-
-// const options : MongooseModuleOptions = {
-
-// }
+import { UserProfileModule } from './userProfile/user-profile.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongo/nestjs', {useFindAndModify: false}),
-    MongooseModule.forFeature([
-      {
-        name: 'Item',
-        schema: ItemSchema
-      }
-    ]),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+    MongooseModule.forRoot('mongodb://mongo/nestjs', {
+      useFindAndModify: false,
+    }),
     UserModule,
     TalesModule,
-    // AuthModule
+    UserProfileModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
-

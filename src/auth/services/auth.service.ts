@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/interface/user.interface';
-import { UserService } from '../user/user.service';
+import { UserService } from '../../user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -23,14 +23,13 @@ export class AuthService {
 
   async login(user: User) {
     const payload = { username: user.email, id: user._id };
-    console.log("@@@@@@@@@@")
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
-  async getProfile(id: string) {
-    return await this.userService.getProfile(id);
-  }
+  // async getProfile(id: string) {
+  //   return await this.userService.getProfile(id);
+  // }
 
 }
