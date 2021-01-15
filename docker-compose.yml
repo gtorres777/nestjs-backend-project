@@ -16,6 +16,6 @@ services:
   mongo:
     image: 'mongo'
     volumes:
-      - .:/data/db
+      - /home/ubuntu/data:/data/db
     ports:
       - 27017:27017
