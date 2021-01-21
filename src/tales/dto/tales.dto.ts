@@ -29,6 +29,9 @@ export class CreateTalesDto {
 
   @IsString()
   titulo: string;
+  
+  @IsString()
+  path: string;
  
   @IsArray()
   @IsString({each: true})

@@ -30,6 +30,11 @@ export const TalesSchema = new Schema({
     required: true,
     unique: true
   },
+  path:{
+    type: String,
+    required:true,
+    unique: true
+  },
   contenido:{
     type: [String],
     required: true,

@@ -14,6 +14,7 @@ export interface Alternative extends Document {
 export interface Tales extends Document {
   readonly id?: string;
   readonly titulo: string;
+  readonly path: string;
   readonly contenido: string[];
   readonly dificultad: string;
   readonly genero: string;
