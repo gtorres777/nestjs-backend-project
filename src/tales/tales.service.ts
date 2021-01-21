@@ -23,4 +23,8 @@ export class TalesService {
   async getOneTale(id: string): Promise<Tales> {
     return await this.talesModel.findOne({ _id: id });
   }
+
+  async getAll(): Promise<Tales[]> {
+    return await this.talesModel.find({})
+  }
 }

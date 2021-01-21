@@ -17,6 +17,11 @@ import { UpdateTalesDto } from './dto/update-tales.dto';
 export class TalesController {
   constructor(private readonly talesService: TalesService) {}
 
+  @Get()
+  getAllTales(): Promise<Tales[]> {
+    return this.talesService.getAll()
+  }
+
   @Get(':id')
   async getOneTale(@Param('id') id: string): Promise<Tales> {
     const tale = await this.talesService.getOneTale(id);
