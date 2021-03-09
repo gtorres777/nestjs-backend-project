@@ -30,10 +30,6 @@
 
 ## Installation
 
-```bash
-$ npm install
-```
- 
 add variable jwt key in an .env file like
 JWT_SECRET_KEY=whateveryouwantbynow
 
