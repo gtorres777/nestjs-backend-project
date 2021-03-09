@@ -30,16 +30,17 @@
 
 ## Installation
 
-add variable jwt key in an .env file like
+1. Add variable jwt key in an .env file like
 JWT_SECRET_KEY=whateveryouwantbynow
 
-
+2. Run the command below to build the containers
 ```bash
 $ docker-compose build
 ```
 
 ## Running the app
 
+3. Run the command below to start the containers
 ```bash
 $ docker-compose up-d
 ```
