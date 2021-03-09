@@ -33,18 +33,19 @@
 ```bash
 $ npm install
 ```
+ 
+add variable jwt key in an .env file like
+JWT_SECRET_KEY=whateveryouwantbynow
+
+
+```bash
+$ docker-compose build
+```
 
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+$ docker-compose up-d
 ```
 
 ## Test
