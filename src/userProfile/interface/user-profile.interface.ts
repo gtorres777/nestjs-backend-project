@@ -8,9 +8,10 @@ export enum SuscriptionState {
 
 export interface ProfileUser extends Document {
   // readonly _id: string;
-  readonly nombre: string;
-  readonly apellido: string;
-  readonly imagen?: string;
+  readonly name: string;
+  readonly last_name: string;
+  readonly profile_image?: string;
+  readonly tales_completed?: string[];
   readonly _user: string;
   readonly suscriptionState: SuscriptionState;
 }

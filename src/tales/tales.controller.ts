@@ -22,6 +22,11 @@ export class TalesController {
     return this.talesService.getAll()
   }
 
+  @Get('tales_completed')
+  getTalesCompleted(): Promise<Tales[]>{
+    return this.talesService.getTalesCompleted()
+  }
+
   @Get(':id')
   async getOneTale(@Param('id') id: string): Promise<Tales> {
     const tale = await this.talesService.getOneTale(id);

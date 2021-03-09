@@ -5,19 +5,23 @@ const imagen: string =
 
 export const ProfileUserSchema = new Schema(
   {
-    nombre: {
+    name: {
       type: String,
       required: true,
     },
-    apellido: {
+    last_name: {
       type: String,
       required: true,
     },
 
-    imagen: {
+    profile_image: {
       type: String,
       required: false,
       default: imagen,
+    },
+    tales_completed: {
+      type: [String],
+      required: false
     },
     suscription_state: {
       type: String,

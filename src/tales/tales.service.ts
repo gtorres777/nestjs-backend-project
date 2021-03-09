@@ -21,10 +21,14 @@ export class TalesService {
   }
 
   async getOneTale(id: string): Promise<Tales> {
-    return await this.talesModel.findOne({ _id: id });
+    return await this.talesModel.findById(id, 'content title _id' );
   }
 
   async getAll(): Promise<Tales[]> {
     return await this.talesModel.find({})
+  }
+
+  async getTalesCompleted(): Promise<Tales[]> {
+    return await this.talesModel.find({}, '_id title')
   }
 }

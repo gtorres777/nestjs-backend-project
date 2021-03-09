@@ -4,10 +4,18 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install && npm run build
+# For Development
+RUN npm install
+
+# For Production 
+# RUN npm install && npm run build
 
 EXPOSE 3000
 
 COPY  . .
 
-CMD npm run start:prod
+# For Development
+CMD npm run start:dev
+
+# For Production
+# CMD npm run start:prod

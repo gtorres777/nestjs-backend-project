@@ -13,43 +13,47 @@ export const AlternativeSchema = new Schema({
 })
 
 export const QuestionSchema = new Schema({
-  pregunta: {
+  question_id: {
+    type: Number,
+    required: true
+  },
+  question: {
     type: String,
     required: true
   },
-  alternativa: [AlternativeSchema],
-  respuesta_correcta: {
+  alternative: [AlternativeSchema],
+  correct_answer: {
     type: Number,
     required: true
   }
 })
 
 export const TalesSchema = new Schema({
-  titulo: {
+  title: {
     type: String,
     required: true,
     unique: true
   },
-  path:{
+  cover_page:{
     type: String,
     required:true,
     unique: true
   },
-  contenido:{
+  content:{
     type: [String],
     required: true,
   },
-  dificultad:{
+  difficulty:{
     type:String,
     required:true
   },
-  genero:{
+  gender:{
     type:String,
     required: true
   },
-  autor:{
+  author:{
     type:String,
     required: true
   },
-  preguntas: [QuestionSchema]
+  questions: [QuestionSchema]
 },{ timestamps: true })

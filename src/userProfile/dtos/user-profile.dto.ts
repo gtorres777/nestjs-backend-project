@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 import { SuscriptionState } from '../interface/user-profile.interface';
 
 export class CreateProfileUserDto {
@@ -8,15 +8,20 @@ export class CreateProfileUserDto {
   id: string;
 
   @IsString()
-  nombre: string;
+  name: string;
 
   @IsString()
-  apellido: string;
+  last_name: string;
 
   @IsString()
   @IsOptional()
-  imagen: string;
-
+  profile_image: string;
+  
+  @IsArray()
+  @IsString({each: true})
+  @IsOptional()
+  tales_completed: string[];
+  
   @IsOptional()
   @IsString()
   _user: string;

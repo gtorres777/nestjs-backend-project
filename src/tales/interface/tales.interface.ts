@@ -1,9 +1,10 @@
 import { Document } from 'mongoose'
 
 export interface Question extends Document {
-  readonly pregunta: string;
-  readonly alternativa: Alternative[];
-  readonly respuesta_correcta: number;
+  readonly question_id: number;
+  readonly question: string;
+  readonly alternative: Alternative[];
+  readonly correct_answer: number;
 }
 
 export interface Alternative extends Document {
@@ -13,11 +14,11 @@ export interface Alternative extends Document {
 
 export interface Tales extends Document {
   readonly id?: string;
-  readonly titulo: string;
-  readonly path: string;
-  readonly contenido: string[];
-  readonly dificultad: string;
-  readonly genero: string;
-  readonly autor: string;
-  readonly preguntas: Question[];
+  readonly title: string;
+  readonly cover_page: string;
+  readonly content: string[];
+  readonly difficulty: string;
+  readonly gender: string;
+  readonly author: string;
+  readonly questions: Question[];
 }

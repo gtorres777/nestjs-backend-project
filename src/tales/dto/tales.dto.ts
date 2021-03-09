@@ -10,16 +10,19 @@ export class CreateAlternativeDto {
 }
 
 export class CreateQuestionDto {
+  @IsNumber()
+  question_id: number;
+
   @IsString()
-  pregunta: string;
+  question: string;
 
   @IsArray()
   @ValidateNested({each: true})
   @Type(() => CreateAlternativeDto)
-  alternativa: CreateAlternativeDto[];
+  alternative: CreateAlternativeDto[];
 
   @IsNumber()
-  respuesta_correcta: number
+  correct_answer: number
 }
 
 export class CreateTalesDto {
@@ -28,27 +31,27 @@ export class CreateTalesDto {
   id: string;
 
   @IsString()
-  titulo: string;
+  title: string;
   
   @IsString()
-  path: string;
+  cover_page: string;
  
   @IsArray()
   @IsString({each: true})
-  contenido: string[];
+  content: string[];
 
   @IsString()
-  dificultad: string;
+  difficulty: string;
 
   @IsString()
-  genero: string;
+  gender: string;
 
   @IsString()
-  autor: string;
+  author: string;
 
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({each: true})
   @Type(() => CreateQuestionDto)
-  preguntas: CreateQuestionDto[];
+  questions: CreateQuestionDto[];
 }
