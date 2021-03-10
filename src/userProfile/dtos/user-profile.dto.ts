@@ -1,6 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEmail, IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { SuscriptionState } from '../interface/user-profile.interface';
+import { Type } from "class-transformer";
+
+export class CreateTalesCompletedDto {
+  @IsString()
+  answered_correctly: string;
+  
+  @IsString()
+  answered_incorrectly: string;
+}
 
 export class CreateProfileUserDto {
   @IsOptional()
@@ -17,10 +26,16 @@ export class CreateProfileUserDto {
   @IsOptional()
   profile_image: string;
   
+  @IsOptional()
   @IsArray()
   @IsString({each: true})
+  favorite_tales: string[];
+
   @IsOptional()
-  tales_completed: string[];
+  @IsArray()
+  @ValidateNested({each: true})
+  @Type(() => CreateTalesCompletedDto)
+  tales_completed: CreateTalesCompletedDto[];
   
   @IsOptional()
   @IsString()

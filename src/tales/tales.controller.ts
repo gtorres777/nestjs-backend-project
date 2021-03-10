@@ -39,6 +39,18 @@ export class TalesController {
     return tale;
   }
 
+  @Get('questions/:tale_id')
+  async getQuestions(@Param('tale_id') tale_id: string): Promise<Tales> {
+    const tale = await this.talesService.getQuestions(tale_id);
+    if (!tale) {
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: 'El cuento fue encontrado',
+      }, HttpStatus.NOT_FOUND);
+    }
+    return tale;
+  }
+
   @Post()
   addTales(@Body() data: CreateTalesDto): Promise<Tales> {
     console.log(data);

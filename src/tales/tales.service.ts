@@ -31,4 +31,10 @@ export class TalesService {
   async getTalesCompleted(): Promise<Tales[]> {
     return await this.talesModel.find({}, '_id title')
   }
+
+  async getQuestions(tale_id: string): Promise<Tales> {
+    return await this.talesModel.findById(tale_id)
+    .select('questions._id questions.question questions.alternative questions.correct_answer') 
+    //TODO Preguntar a chalo si el correct answer va o no va
+  }
 }
