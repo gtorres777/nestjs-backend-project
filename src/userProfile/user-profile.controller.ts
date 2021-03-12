@@ -10,7 +10,7 @@ export class UserProfileController {
   constructor(private readonly userProfileService: UserProfileService) {}
 
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post()
   addProfile(
     @Req() req,

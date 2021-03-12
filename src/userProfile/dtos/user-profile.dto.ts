@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEmail, IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsNumber, IsEmail, IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { SuscriptionState } from '../interface/user-profile.interface';
 import { Type } from "class-transformer";
 
@@ -9,6 +9,9 @@ export class CreateTalesCompletedDto {
   
   @IsString()
   answered_incorrectly: string;
+
+  @IsNumber()
+  times_read: number;
 }
 
 export class CreateProfileUserDto {
@@ -18,9 +21,6 @@ export class CreateProfileUserDto {
 
   @IsString()
   name: string;
-
-  @IsString()
-  last_name: string;
 
   @IsString()
   @IsOptional()

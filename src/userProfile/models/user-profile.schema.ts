@@ -13,6 +13,10 @@ export const TalesCompletedSchema = new Schema({
     type: String,
     required: true
   },
+  times_read: {
+    type: Number,
+    required: true
+  }
 
 },
   { timestamps: true },
@@ -24,11 +28,6 @@ export const ProfileUserSchema = new Schema(
       type: String,
       required: true,
     },
-    last_name: {
-      type: String,
-      required: true,
-    },
-
     profile_image: {
       type: String,
       required: false,

@@ -21,4 +21,5 @@ export class UserProfileService {
     const profile = new this.profileUserModel({ ...profileUser, _user: idUser });
     return await profile.save();
   }
+
 }
