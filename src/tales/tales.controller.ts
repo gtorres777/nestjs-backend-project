@@ -79,9 +79,9 @@ export class TalesController {
     @Body() data: CreateTalesCompletedDto,
     @Req() req){
       console.log("data",data)
-      await this.talesService.addTaleCompleted(data, req.user.userId)
       return {
-        message: "Se agrego correctamente el cuento a tus cuentos completados"
+        message: "Se agrego correctamente el cuento a tus cuentos completados",
+        aea: await this.talesService.addTaleCompleted(data, req.user.userId)
       }
   }
 
