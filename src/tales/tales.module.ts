@@ -4,6 +4,7 @@ import { TalesService } from './tales.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import {TalesSchema} from './models/tales.schema';
 import {UserProfileModule} from 'src/userProfile/user-profile.module';
+import {TalesCompletedSchema} from 'src/userProfile/models/user-profile.schema';
 
 
 @Module({
@@ -15,6 +16,10 @@ import {UserProfileModule} from 'src/userProfile/user-profile.module';
       {
         name:'Tales',
         schema: TalesSchema,
+      },
+      {
+        name:'TalesCompleted',
+        schema: TalesCompletedSchema,
       },
     ]),
   ],

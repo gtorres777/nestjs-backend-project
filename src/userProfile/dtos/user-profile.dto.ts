@@ -5,11 +5,15 @@ import { Type } from "class-transformer";
 
 export class CreateTalesCompletedDto {
   @IsString()
+  tale_id: string;
+
+  @IsString()
   answered_correctly: string;
   
   @IsString()
   answered_incorrectly: string;
 
+  @IsOptional()
   @IsNumber()
   times_read: number;
 }

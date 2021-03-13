@@ -5,6 +5,10 @@ const imagen: string =
 
 
 export const TalesCompletedSchema = new Schema({
+  tale_id: {
+    type: String,
+    required: true
+  },
   answered_correctly: {
     type: String,
     required: true
@@ -15,7 +19,7 @@ export const TalesCompletedSchema = new Schema({
   },
   times_read: {
     type: Number,
-    required: true
+    required: false
   }
 
 },

@@ -6,9 +6,10 @@ export enum SuscriptionState {
 }
 
 export interface TalesCompleted extends Document {
+  readonly tale_id: string;
   readonly answered_correctly: string;
   readonly answered_incorrectly: string;
-  readonly times_read: number;
+  readonly times_read?: number;
 }
 
 export interface ProfileUser extends Document {

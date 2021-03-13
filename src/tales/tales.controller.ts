@@ -15,13 +15,12 @@ import { TalesService } from './tales.service';
 import { Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import {JwtAuthGuard} from 'src/auth/guards/jwt-auth.guard';
-import {UserProfileService} from 'src/userProfile/user-profile.service';
+import {CreateTalesCompletedDto} from 'src/userProfile/dtos/user-profile.dto';
 
 @Controller('tales')
 export class TalesController {
   constructor(
-    private readonly talesService: TalesService,
-    private readonly userProfileService: UserProfileService) {}
+    private readonly talesService: TalesService) {}
 
   // @Get()
   // getAllTales(): Promise<Tales[]> {
@@ -72,6 +71,18 @@ export class TalesController {
     return {
       message: "Se agrego correctamente el cuento a tus favoritos"
     }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('add_tale_completed')
+  async addTaleCompleted(
+    @Body() data: CreateTalesCompletedDto,
+    @Req() req){
+      console.log("data",data)
+      await this.talesService.addTaleCompleted(data, req.user.userId)
+      return {
+        message: "Se agrego correctamente el cuento a tus cuentos completados"
+      }
   }
 
   @Put(':id')

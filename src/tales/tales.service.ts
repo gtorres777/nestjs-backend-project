@@ -5,11 +5,14 @@ import { Model } from 'mongoose';
 import { Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import {UserProfileService} from 'src/userProfile/user-profile.service';
+import {CreateTalesCompletedDto} from 'src/userProfile/dtos/user-profile.dto';
+import {TalesCompleted} from 'src/userProfile/interface/user-profile.interface';
 
 @Injectable()
 export class TalesService {
   constructor(
     @InjectModel('Tales') private talesModel: Model<Tales>,
+    @InjectModel('TalesCompleted') private talesCompleted: Model<TalesCompleted>,
     private userProfileService: UserProfileService
   ) {}
 
@@ -47,6 +50,33 @@ export class TalesService {
     const favorite_tales_array: string[] = userprofile.favorite_tales;
     favorite_tales_array.push(tale_id);
     return await userprofile.save(); 
+  }
+
+  async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<any>{
+    const userprofile = await this.userProfileService.getProfile(userid);
+
+    // userprofile.tales_completed.push({...data, times_read: 2} as this.talesCompleted)
+    //
+    // const tales_completed_array: string[] = userprofile.tales_completed;
+
+    // console.log("TIPO",typeof(tales_completed_array))
+    
+    // let times = 0;
+    // tales_completed_array.map(
+    //   tale => {if(data.tale_id === tale.tale_id){
+    //     times ++;
+    //     }});
+    
+    // console.log("TIMES",times);
+
+    // tales_completed_array.push({
+    //   tale_id: data.tale_id,
+    //   answered_correctly: data.answered_correctly,
+    //   answered_incorrectly: data.answered_incorrectly,
+    //   times_read: times
+    // });
+
+    return await userprofile.save();
   }
 
 
