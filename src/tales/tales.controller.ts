@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { CreateTalesDto } from './dto/tales.dto';
 import { TalesService } from './tales.service';
-import { Tales } from './interface/tales.interface';
+import { BasePagination, Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import {JwtAuthGuard} from 'src/auth/guards/jwt-auth.guard';
 import {CreateTalesCompletedDto} from 'src/userProfile/dtos/user-profile.dto';
@@ -27,9 +27,10 @@ export class TalesController {
   //   return this.talesService.getAll()
   // }
 
-  @Get('tales_completed')
-  getTalesCompleted(): Promise<Tales[]>{
-    return this.talesService.getTalesCompleted()
+  @Get('tales_completed/:page')
+  @UseGuards(JwtAuthGuard)
+  getTalesCompleted(@Req() req, @Param("page") param: string): Promise<BasePagination<Tales[]>>{
+    return this.talesService.getTalesCompleted(req.user.userId, Number(param))
   }
 
   @Get(':id')

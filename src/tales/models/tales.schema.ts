@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose'
-
+import * as mongoosePagination from 'mongoose-paginate-v2'
 
 export const AlternativeSchema = new Schema({
   label: {
@@ -57,3 +57,4 @@ export const TalesSchema = new Schema({
   },
   questions: [QuestionSchema]
 },{ timestamps: true })
+TalesSchema.plugin(mongoosePagination)

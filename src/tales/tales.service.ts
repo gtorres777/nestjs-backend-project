@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTalesDto } from './dto/tales.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Tales } from './interface/tales.interface';
+import { BasePagination, Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import { UserProfileService } from 'src/userProfile/user-profile.service';
 import { CreateTalesCompletedDto } from 'src/userProfile/dtos/user-profile.dto';
@@ -34,11 +34,30 @@ export class TalesService {
   // async getAll(): Promise<Tales[]> {
   //   return await this.talesModel.find({})
   // }
-
-  async getTalesCompleted(): Promise<Tales[]> {
-    return await this.talesModel.find({})
+  async getTalesCompleted(userId: string, page: number): Promise<BasePagination<Tales[]>> {
+    const LIMIT = 4
+    const userprofile = await this.userProfileService.getProfile(userId);
+    const userTalesCompleted = userprofile.tales_completed.map(item => item.tale_id)
+    // const _page = page === 1 ? 0 : page
+    const collectionSize = await this.talesModel.count({})
+    const allTales = await this.talesModel.find({}).skip((page - 1) * LIMIT).limit(LIMIT)
+    const allTalesMapped = allTales.map(item => {
+      if (userTalesCompleted.includes(item._id)) {
+        return {...item.toObject(), times_read: true}
+      } else {
+        return {...item.toObject(), times_read: false}
+      }
+    })
+    // await this.talesModel.deleteMany({})
+    return {
+      data: allTalesMapped,
+      currentPage: allTales.length > 0 ? page : 1,
+      lastPage: allTales.length > 0 ? Math.ceil(collectionSize / LIMIT) : 1, 
+      perPage: LIMIT
+    }
   }
 
+  
   // async getQuestions(tale_id: string): Promise<Tales> {
   //   return await this.talesModel.findById(tale_id)
   //   .select('questions._id questions.question questions.alternative questions.correct_answer') 

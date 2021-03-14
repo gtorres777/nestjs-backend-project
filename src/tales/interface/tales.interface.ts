@@ -21,4 +21,13 @@ export interface Tales extends Document {
   readonly gender: string;
   readonly author: string;
   readonly questions: Question[];
+  readonly times_read?: boolean
+}
+
+
+export interface BasePagination<T> {
+  data: T;
+  currentPage: number;
+  lastPage: number;
+  perPage: number;
 }
