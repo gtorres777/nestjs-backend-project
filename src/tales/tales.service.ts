@@ -7,6 +7,7 @@ import { UpdateTalesDto } from './dto/update-tales.dto';
 import { UserProfileService } from 'src/userProfile/user-profile.service';
 import { CreateTalesCompletedDto } from 'src/userProfile/dtos/user-profile.dto';
 import { ProfileUser, TalesCompleted } from 'src/userProfile/interface/user-profile.interface';
+import {BaseResponse} from 'src/helpers/BaseResponse';
 
 @Injectable()
 export class TalesService {
@@ -64,11 +65,24 @@ export class TalesService {
   //TODO Preguntar a chalo si el correct answer va o no va
   // }
 
-  async addFavoriteTale(tale_id: string, userid: string): Promise<any> {
+  async addFavoriteTale(tale_id: string, userid: string): Promise<BaseResponse> {
     const userprofile = await this.userProfileService.getProfile(userid);
     const favorite_tales_array: string[] = userprofile.favorite_tales;
-    favorite_tales_array.push(tale_id);
-    return await userprofile.save();
+    const tale_coincidence = favorite_tales_array.find(tale => tale === tale_id);
+    console.log(tale_coincidence);
+    if (tale_coincidence){
+      return{
+          status: 202,
+          message: "Ya tiene agregado este cuento a sus favoritos",
+      }
+    }else{
+      favorite_tales_array.push(tale_id);
+      await userprofile.save();
+      return {
+        status: 202,
+        message: "Cuento favorito agregado correctamente",
+      }
+    }
   }
 
   async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<ProfileUser> {

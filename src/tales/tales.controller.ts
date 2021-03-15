@@ -68,11 +68,9 @@ export class TalesController {
   async addFavoriteTale(
     @Body('tale_id') tale_id: string,
     @Req() req){
-    await this.talesService.addFavoriteTale(tale_id,req.user.userId)
-    return {
-      message: "Se agrego correctamente el cuento a tus favoritos"
+    return await this.talesService.addFavoriteTale(tale_id,req.user.userId)   
     }
-  }
+
 
   @UseGuards(JwtAuthGuard)
   @Post('add_tale_completed')
