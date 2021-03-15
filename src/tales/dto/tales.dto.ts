@@ -1,5 +1,6 @@
 import { IsArray, IsNumber, IsOptional, IsString, ValidateNested, ArrayNotEmpty } from "class-validator";
 import { Type } from "class-transformer";
+import { CreateTalesCompletedDto, CreateVideoReference } from "src/userProfile/dtos/user-profile.dto";
 
 export class CreateAlternativeDto {
   @IsString()
@@ -7,6 +8,11 @@ export class CreateAlternativeDto {
   
   @IsNumber()
   value: number
+}
+
+export class UtilsDto {
+  part1: CreateTalesCompletedDto
+  part2: CreateVideoReference
 }
 
 export class CreateQuestionDto {

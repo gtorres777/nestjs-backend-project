@@ -15,7 +15,7 @@ import { TalesService } from './tales.service';
 import { BasePagination, Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import {JwtAuthGuard} from 'src/auth/guards/jwt-auth.guard';
-import {CreateTalesCompletedDto} from 'src/userProfile/dtos/user-profile.dto';
+import {CreateTalesCompletedDto, CreateVideoReference} from 'src/userProfile/dtos/user-profile.dto';
 
 @Controller('tales')
 export class TalesController {
@@ -85,6 +85,7 @@ export class TalesController {
         aea: await this.talesService.addTaleCompleted(data, req.user.userId)
       }
   }
+  
 
   @Put(':id')
   updateTales(

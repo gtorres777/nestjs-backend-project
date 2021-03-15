@@ -26,6 +26,24 @@ export const TalesCompletedSchema = new Schema({
   { timestamps: true },
 )
 
+export const VideoReferenceSchema = new Schema({
+  _videoId: {
+    type: Types.ObjectId,
+    ref: "Videos",
+    required: false
+  },
+  date: {
+    type: Date
+  },
+  state: {
+    type: String,
+    enum: ['ACTIVE', 'INACTIVE'],
+    default: 'INACTIVE'
+  }
+}, {
+  timestamps: true
+})
+
 export const ProfileUserSchema = new Schema(
   {
     name: {
@@ -51,7 +69,10 @@ export const ProfileUserSchema = new Schema(
       type: Types.ObjectId,
       ref: "User",
       required: true
-    }
+    },
+    user_videos: [VideoReferenceSchema]
   },
   { timestamps: true },
 );
+
+

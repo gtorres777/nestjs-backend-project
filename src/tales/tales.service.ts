@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTalesDto } from './dto/tales.dto';
+import { CreateTalesDto, UtilsDto } from './dto/tales.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BasePagination, Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import { UserProfileService } from 'src/userProfile/user-profile.service';
-import { CreateTalesCompletedDto } from 'src/userProfile/dtos/user-profile.dto';
+import { CreateTalesCompletedDto, CreateVideoReference } from 'src/userProfile/dtos/user-profile.dto';
 import { ProfileUser, TalesCompleted } from 'src/userProfile/interface/user-profile.interface';
 
 @Injectable()
@@ -71,6 +71,8 @@ export class TalesService {
     return await userprofile.save();
   }
 
+  
+
   async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<ProfileUser> {
     const userprofile = await this.userProfileService.getProfile(userid);
 
@@ -86,6 +88,7 @@ export class TalesService {
         times_read: 1
       })
       const talesCompleteSave = await talesComplete.save()
+      userprofile.user_videos.push(await this.userProfileService.attachRandomVideo())
       userprofile.tales_completed.push(talesCompleteSave)
     }
 
