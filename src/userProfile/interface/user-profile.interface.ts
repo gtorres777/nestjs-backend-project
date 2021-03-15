@@ -5,6 +5,12 @@ export enum SuscriptionState {
   INACTIVE = 'INACTIVE',
 }
 
+export interface VideoReference extends Document {
+  readonly _videoId: string
+  readonly date: Date,
+  state: SuscriptionState
+}
+
 export interface TalesCompleted extends Document {
   readonly tale_id: string;
   readonly answered_correctly: string;
@@ -20,4 +26,5 @@ export interface ProfileUser extends Document {
   readonly tales_completed?: TalesCompleted[];
   readonly _user: string;
   readonly suscriptionState: SuscriptionState;
+  user_videos: VideoReference[]
 }

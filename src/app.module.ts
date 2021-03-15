@@ -11,6 +11,7 @@ import { WalletModule } from './wallet/wallet.module';
 import { AvatarModule } from './avatar/avatar.module';
 import { SetsModule } from './sets/sets.module';
 import { OutfitModule } from './outfit/outfit.module';
+import { VideosModule } from './videos/videos.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { OutfitModule } from './outfit/outfit.module';
     WalletModule,
     AvatarModule,
     SetsModule,
-    OutfitModule
+    OutfitModule,
+    VideosModule
   ],
   controllers: [AppController],
   providers: [AppService],
