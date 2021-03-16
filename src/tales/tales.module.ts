@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {TalesSchema} from './models/tales.schema';
 import {UserProfileModule} from 'src/userProfile/user-profile.module';
 import {TalesCompletedSchema} from 'src/userProfile/models/user-profile.schema';
+import {WalletModule} from 'src/wallet/wallet.module';
 
 
 @Module({
@@ -12,6 +13,7 @@ import {TalesCompletedSchema} from 'src/userProfile/models/user-profile.schema';
   providers: [TalesService],
   imports:[
     UserProfileModule,
+    WalletModule,
     MongooseModule.forFeature([
       {
         name:'Tales',

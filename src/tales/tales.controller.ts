@@ -33,6 +33,12 @@ export class TalesController {
     return this.talesService.getTalesCompleted(req.user.userId, Number(param))
   }
 
+  @Get('favorite_tales')
+  @UseGuards(JwtAuthGuard)
+  getFavoriteTales(@Req() req): Promise<string[]>{
+    return this.talesService.getFavoriteTales(req.user.userId)
+  }
+
   @Get(':id')
   async getOneTale(@Param('id') id: string): Promise<Tales> {
     const tale = await this.talesService.getOneTale(id);

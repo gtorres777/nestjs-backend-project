@@ -8,13 +8,15 @@ import { UserProfileService } from 'src/userProfile/user-profile.service';
 import { CreateTalesCompletedDto, CreateVideoReference } from 'src/userProfile/dtos/user-profile.dto';
 import { ProfileUser, TalesCompleted } from 'src/userProfile/interface/user-profile.interface';
 import {BaseResponse} from 'src/helpers/BaseResponse';
+import {WalletService} from 'src/wallet/wallet.service';
 
 @Injectable()
 export class TalesService {
   constructor(
     @InjectModel('Tales') private talesModel: Model<Tales>,
     @InjectModel('TalesCompleted') private talesCompleted: Model<TalesCompleted>,
-    private userProfileService: UserProfileService
+    private userProfileService: UserProfileService,
+    private walletService: WalletService,
   ) { }
 
   async addTales(tales: CreateTalesDto): Promise<Tales> {
@@ -32,6 +34,11 @@ export class TalesService {
     return await this.talesModel.findById(id, 'content title _id');
   }
 
+  async getFavoriteTales(userId: string): Promise<string[]> {
+    const userprofile = await this.userProfileService.getProfile(userId);
+    const favorite_tales_array = userprofile.favorite_tales;
+    return favorite_tales_array;
+  }
   // async getAll(): Promise<Tales[]> {
   //   return await this.talesModel.find({})
   // }
@@ -104,6 +111,9 @@ export class TalesService {
       const talesCompleteSave = await talesComplete.save()
       userprofile.user_videos.push(await this.userProfileService.attachRandomVideo())
       userprofile.tales_completed.push(talesCompleteSave)
+
+      //COINS
+      await this.walletService.addCoinsToWallet(userid);
     }
 
     return await userprofile.save();
