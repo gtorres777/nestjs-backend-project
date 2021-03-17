@@ -7,8 +7,9 @@ export enum SuscriptionState {
 
 export interface VideoReference extends Document {
   readonly _videoId: string
-  readonly date: Date,
+  date: Date
   state: SuscriptionState
+  time_left?: string
 }
 
 export interface TalesCompleted extends Document {

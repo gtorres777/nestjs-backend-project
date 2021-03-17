@@ -39,7 +39,8 @@ export const VideoReferenceSchema = new Schema({
     type: String,
     enum: ['ACTIVE', 'INACTIVE'],
     default: 'INACTIVE'
-  }
+  },
+  time_left: String
 }, {
   timestamps: true
 })

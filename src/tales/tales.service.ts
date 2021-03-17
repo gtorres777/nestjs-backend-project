@@ -6,7 +6,7 @@ import { BasePagination, Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import { UserProfileService } from 'src/userProfile/user-profile.service';
 import { CreateTalesCompletedDto, CreateVideoReference } from 'src/userProfile/dtos/user-profile.dto';
-import { ProfileUser, TalesCompleted } from 'src/userProfile/interface/user-profile.interface';
+import { ProfileUser, SuscriptionState, TalesCompleted } from 'src/userProfile/interface/user-profile.interface';
 import {BaseResponse} from 'src/helpers/BaseResponse';
 import {WalletService} from 'src/wallet/wallet.service';
 
@@ -117,6 +117,16 @@ export class TalesService {
     }
 
     return await userprofile.save();
+  }
+
+  async updateVideTime(videoId: string, userId: string) : Promise<ProfileUser> {
+    const userprofile = await this.userProfileService.getProfile(userId);
+    const video = userprofile.user_videos.filter(item => item._videoId == videoId)[0]
+    video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
+    video.state = SuscriptionState.ACTIVE
+    // video.set("state", SuscriptionState.ACTIVE)
+    // video.set("")
+    return await userprofile.save()
   }
 
 
