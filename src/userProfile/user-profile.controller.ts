@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateProfileUserDto } from "./dtos/user-profile.dto";
 import { ProfileUser, VideoReference } from "./interface/user-profile.interface";
+import {buyTimeForVideo} from './interface/uservideos.interface';
 import { UserProfileService } from "./user-profile.service";
 
 @Controller('profile')
@@ -36,5 +37,14 @@ export class UserProfileController {
   }
 
   
+  @UseGuards(JwtAuthGuard)
+  @Post('updateVideo')
+  async buyTimeForVideo(@Req() req, @Body() data: buyTimeForVideo) {
+    const response = await this.userProfileService.buyTimeForVideo(data.videoId, req.user.userId, data.coins) 
+    return {
+      message: response.message,
+      data: response.data
+    }
+  }
 
 }

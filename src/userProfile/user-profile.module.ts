@@ -4,12 +4,14 @@ import { ProfileUserSchema, VideoReferenceSchema } from './models/user-profile.s
 import { UserProfileService } from './user-profile.service';
 import { UserProfileController } from './user-profile.controller';
 import { VideosModule } from 'src/videos/videos.module';
+import {WalletModule} from 'src/wallet/wallet.module';
 
 @Module({
   controllers: [UserProfileController],
   providers: [UserProfileService],
   imports: [
     VideosModule,
+    WalletModule,
     MongooseModule.forFeature([
       {
         name: 'ProfileUser',

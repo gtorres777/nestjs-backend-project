@@ -40,11 +40,18 @@ export class WalletService {
     coins: number
   ): Promise<BaseResponse> {
     const wallet = await this.walletModel.findOne({ _user: idUser });     
-    wallet.total_coins += coins;
-    await wallet.save();
-    return {
-      status: 201,
-      message: "Monedas restadas correctamente"
+    if (wallet.total_coins <= 0) {
+      return {
+        status: 301,
+        message: "No cuenta con las monedas suficientes"
+      }
+    }else{
+      wallet.total_coins -= coins;
+      await wallet.save();
+      return {
+        status: 201,
+        message: "Monedas restadas correctamente"
+      }  
     }
   }
 }

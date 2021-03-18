@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { time } from 'console';
 import { Model } from 'mongoose';
+import {BaseResponse} from 'src/helpers/BaseResponse';
 import { VideosService } from 'src/videos/videos.service';
+import {WalletService} from 'src/wallet/wallet.service';
 import { CreateProfileUserDto } from './dtos/user-profile.dto';
 import { ProfileUser, VideoReference, SuscriptionState } from './interface/user-profile.interface';
 
@@ -11,7 +13,8 @@ export class UserProfileService {
   constructor(
     @InjectModel('ProfileUser') private profileUserModel: Model<ProfileUser>,
     @InjectModel('VideoReference') private videoReferenceModel: Model<VideoReference>,
-    private videoService: VideosService
+    private videoService: VideosService,
+    private walletService: WalletService,
   ) {}
 
   async getProfile(id: string): Promise<ProfileUser> {
@@ -42,7 +45,6 @@ export class UserProfileService {
     profile.user_videos.map((item) => {
       const hours = this.getHours(item.date)
       const minutes = this.getMinutes(item.date)
-      console.log(hours)
       if (hours >= 24) {
         item.state = SuscriptionState.INACTIVE
         item.time_left = "Se acabó tu tiempo"
@@ -67,6 +69,39 @@ export class UserProfileService {
     const currentDate:Date = new Date()
     const TO_HOURS = 1000 * 60
     return (currentDate.valueOf() - date.valueOf())/TO_HOURS
+  }
+
+  async buyTimeForVideo(videoId: string, userId: string, coins: number) : Promise<BaseResponse>{
+    //COINS
+    const wallet = await this.walletService.substractCoinsToWallet(userId,coins);
+    console.log("bfd",wallet)
+    if (wallet.status == 301){
+      return {
+        status: 301,
+        message: wallet.message,
+        data: await this.getAllVideos(userId)
+        
+      }
+    }else{
+    const userprofile = await this.profileUserModel.findOne({ _user: userId });
+    const video = userprofile.user_videos.filter(item => item._videoId == videoId)[0]
+    // const test = new Date("2021-03-16T18:43:13.308Z");
+    const time_user_video = video.date
+
+    if(this.getHours(time_user_video) >= 24)
+      video.date = new Date()
+    else
+      video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
+
+    video.state = SuscriptionState.ACTIVE
+    await userprofile.save()
+
+      return {
+        status: 201,
+        message: `Video actualizado y ${wallet.message}`,
+        data: await this.getAllVideos(userId)
+      }
+    }
   }
 
 }
