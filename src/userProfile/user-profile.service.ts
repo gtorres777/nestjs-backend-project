@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { time } from 'console';
 import { Model } from 'mongoose';
 import {BaseResponse} from 'src/helpers/BaseResponse';
+import getWeek from 'src/helpers/getWeek';
 import { VideosService } from 'src/videos/videos.service';
 import {WalletService} from 'src/wallet/wallet.service';
 import { CreateProfileUserDto } from './dtos/user-profile.dto';
@@ -103,5 +104,70 @@ export class UserProfileService {
       }
     }
   }
+
+  getPercentage(total_questions: number, answered_correctly: number){
+    const result = Math.round((answered_correctly * 100)/total_questions)
+    return result
+  }
+
+
+  
+
+  async getStadistics(userId: string): Promise<BaseResponse>{
+    const userprofile = await this.getProfile(userId);
+    
+    /////////////////////////Variables to return///////////////////////////////
+    const total_tales_readed = userprofile.tales_completed.length
+    
+    //TODAY
+    let today_tales_readed:number = 0
+    //WEEK
+    let week_tales_readed:number = 0
+    ///////////////////////////////////////////////////////////////////////////
+
+    let total_questions_today:number = 0
+    let answered_correctly_today:number = 0
+
+    let total_questions_week:number = 0
+    let answered_correctly_week:number = 0
+
+    //DATES
+    const today = new Date()
+    const current_week = new Date()
+
+    const stadistics = userprofile.tales_completed.map(tale =>{
+      if(tale.createdAt.getDay() == today.getDay()){
+        today_tales_readed ++
+        total_questions_today += Number(tale.answered_correctly) + Number(tale.answered_incorrectly)
+        answered_correctly_today += Number(tale.answered_correctly)
+      }
+
+      if(getWeek(tale.createdAt) == getWeek(current_week)){
+        week_tales_readed ++
+        total_questions_week += Number(tale.answered_correctly) + Number(tale.answered_incorrectly)
+        answered_correctly_week += Number(tale.answered_correctly)
+      }
+    })
+
+    const hit_percentaje_today = this.getPercentage(total_questions_today, answered_correctly_today)
+    const hit_percentaje_week = this.getPercentage(total_questions_week, answered_correctly_week)
+
+    return {
+      status: 201,
+      message: "Datos obtenidos correctamente",
+      stadistics: {
+        today:{
+          today_tales_readed: today_tales_readed,
+          hit_percentaje_today: hit_percentaje_today
+        },
+        week:{
+          week_tales_readed: week_tales_readed,
+          hit_percentaje_week: hit_percentaje_week
+        },
+        total_tales: total_tales_readed
+      }
+    }
+  }
+
 
 }

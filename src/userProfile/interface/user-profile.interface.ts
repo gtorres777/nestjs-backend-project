@@ -17,6 +17,7 @@ export interface TalesCompleted extends Document {
   readonly answered_correctly: string;
   readonly answered_incorrectly: string;
   times_read?: number;
+  createdAt?: Date;
 }
 
 export interface ProfileUser extends Document {

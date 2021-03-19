@@ -47,4 +47,15 @@ export class UserProfileController {
     }
   }
 
+
+  @UseGuards(JwtAuthGuard)
+  @Get('stadistics')
+  async getStadistics(@Req() req) {
+    const response = await this.userProfileService.getStadistics(req.user.userId) 
+    return {
+      message: response.message,
+      stadistics: response.stadistics
+    }
+  }
+
 }
