@@ -11,7 +11,7 @@ import {AvatarSchema} from './models/avatar.schema';
     MongooseModule.forFeature([
       {
         name: 'Avatar',
-        schema: AvatarSchema
+        schema: AvatarSchema,
       }
     ])
   ],

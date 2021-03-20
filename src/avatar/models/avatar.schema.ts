@@ -17,7 +17,7 @@ export const AvatarSchema = new Schema(
     avatar_sets: {
       type: [String],
       required: false,
-      default: avatar_normal
+      default: avatar_normal,
     },
     current_style: {
       type: String,

@@ -1,6 +1,6 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
-export class SetsDto {
+export class CreateSetsDto {
   @IsOptional()
   @IsString()
   id: string;

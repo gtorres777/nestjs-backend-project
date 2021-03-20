@@ -92,8 +92,6 @@ export class TalesService {
     }
   }
 
-  
-
   async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<ProfileUser> {
     const userprofile = await this.userProfileService.getProfile(userid);
 

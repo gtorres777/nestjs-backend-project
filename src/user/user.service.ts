@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AvatarService } from 'src/avatar/avatar.service';
 import {CreateProfileUserDto} from 'src/userProfile/dtos/user-profile.dto';
 import {SuscriptionState} from 'src/userProfile/interface/user-profile.interface';
 import {UserProfileService} from 'src/userProfile/user-profile.service';
@@ -15,7 +16,8 @@ export class UserService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
     private userProfileService: UserProfileService,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private avatarService: AvatarService
   ) {}
 
   async addUser(user: CreateUserDto): Promise<User> {
@@ -33,7 +35,8 @@ export class UserService {
       favorite_tales:[  ], 
       tales_completed:[  ],
       _user: user_saved._id,
-      suscription_state:SuscriptionState.INACTIVE};
+      suscription_state:SuscriptionState.INACTIVE
+    };
 
     const profileUser= await this.userProfileService.addProfile(userprofile_data, user_saved._id)
 
@@ -41,8 +44,9 @@ export class UserService {
       _user: user_saved._id,
       total_coins: 0
     }
-
     const userWallet = await this.walletService.addWallet(userWallet_data, user_saved._id)
+    this.avatarService.createAvatar(user_saved._id).subscribe(console.log)
+
 
     return user_saved
   }

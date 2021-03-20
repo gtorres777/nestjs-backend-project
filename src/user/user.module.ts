@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AvatarModule } from 'src/avatar/avatar.module';
 import {UserProfileModule} from 'src/userProfile/user-profile.module';
 import {WalletModule} from 'src/wallet/wallet.module';
 import { UserSchema } from './models/user.schema';
@@ -12,6 +13,7 @@ import { UserService } from './user.service';
   imports: [
     UserProfileModule,
     WalletModule,
+    AvatarModule,
     MongooseModule.forFeature([
       {
         name: 'User',

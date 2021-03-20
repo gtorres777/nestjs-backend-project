@@ -5,6 +5,7 @@ import { UserProfileService } from './user-profile.service';
 import { UserProfileController } from './user-profile.controller';
 import { VideosModule } from 'src/videos/videos.module';
 import {WalletModule} from 'src/wallet/wallet.module';
+import { AvatarModule } from 'src/avatar/avatar.module';
 
 @Module({
   controllers: [UserProfileController],
@@ -12,6 +13,7 @@ import {WalletModule} from 'src/wallet/wallet.module';
   imports: [
     VideosModule,
     WalletModule,
+    AvatarModule,
     MongooseModule.forFeature([
       {
         name: 'ProfileUser',
