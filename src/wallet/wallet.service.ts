@@ -54,4 +54,10 @@ export class WalletService {
       }  
     }
   }
+
+  async checkCoins(idUser: string, coins: number): Promise<boolean> {
+    const wallet = await this.walletModel.findOne({ _user: idUser });     
+    if (wallet.total_coins <= coins) return false
+    else true
+  }
 }

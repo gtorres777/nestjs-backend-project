@@ -83,7 +83,7 @@ export class UserProfileService {
         data: await this.getAllVideos(userId)
         
       }
-    }else{
+    } else{
     const userprofile = await this.profileUserModel.findOne({ _user: userId });
     const video = userprofile.user_videos.filter(item => item._videoId == videoId)[0]
     // const test = new Date("2021-03-16T18:43:13.308Z");

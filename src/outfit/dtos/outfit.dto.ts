@@ -1,6 +1,7 @@
 import { IsNumber, IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { ListOfSet } from 'src/avatar/interface/avatar.interface';
 
-export class OutfitDto {
+export class CreateOutfitDto {
   @IsOptional()
   @IsString()
   id: string;
@@ -8,8 +9,8 @@ export class OutfitDto {
   @IsString()
   outfit_image: string;
 
-  @IsString()
-  outfit_name: string;
+  @IsEnum(ListOfSet)
+  outfit_name: ListOfSet;
 
   @IsOptional()
   @IsString()

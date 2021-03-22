@@ -14,4 +14,9 @@ export class SetsService {
         return await set.save()
     }
 
+    async getOneSet(setId: string): Promise<Sets> {
+        const set = await this.setsModel.findById(setId)
+        return set
+    }
+
 }

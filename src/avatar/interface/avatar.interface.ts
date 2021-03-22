@@ -12,6 +12,6 @@ export interface Avatar extends Document {
   readonly _user?: string;
   readonly avatar_name?: string;
   readonly avatar_sets?: ListOfSet[];
-  readonly current_style?: ListOfSet;
+  current_style?: ListOfSet;
 }
 

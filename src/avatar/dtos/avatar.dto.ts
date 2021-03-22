@@ -1,4 +1,5 @@
-import { IsArray, IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEmail, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ListOfSet } from '../interface/avatar.interface';
 
 export class CreateAvatarDto {
   @IsOptional()
@@ -21,4 +22,12 @@ export class CreateAvatarDto {
   @IsOptional()
   @IsString()
   current_style: string;
+}
+
+export class BuyAvatarSetDto {
+  @IsEnum(ListOfSet)
+  set_name: ListOfSet
+
+  @IsNumber()
+  coins: number
 }
