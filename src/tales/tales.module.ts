@@ -25,5 +25,6 @@ import {WalletModule} from 'src/wallet/wallet.module';
       },
     ]),
   ],
+  exports: [MongooseModule]
 })
 export class TalesModule {}

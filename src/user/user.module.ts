@@ -21,6 +21,6 @@ import { UserService } from './user.service';
       }
     ]),
   ],
-  exports: [UserService]
+  exports: [UserService, MongooseModule]
 })
 export class UserModule {}
