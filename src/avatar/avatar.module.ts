@@ -17,6 +17,6 @@ import {AvatarSchema} from './models/avatar.schema';
       }
     ])
   ],
-  exports: [AvatarService]
+  exports: [AvatarService, MongooseModule]
 })
 export class AvatarModule {}

@@ -15,6 +15,6 @@ import { SetsService } from './sets.service';
       }
     ])
   ],
-  exports: [SetsService]
+  exports: [SetsService, MongooseModule]
 })
 export class SetsModule {}

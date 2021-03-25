@@ -40,7 +40,7 @@ export class WalletService {
     coins: number
   ): Promise<BaseResponse> {
     const wallet = await this.walletModel.findOne({ _user: idUser });     
-    if (wallet.total_coins <= 0) {
+    if (wallet.total_coins < coins) {
       return {
         status: 301,
         message: "No cuenta con las monedas suficientes"
@@ -57,7 +57,8 @@ export class WalletService {
 
   async checkCoins(idUser: string, coins: number): Promise<boolean> {
     const wallet = await this.walletModel.findOne({ _user: idUser });     
-    if (wallet.total_coins <= coins) return false
-    else true
+    console.log(wallet, coins)
+    if (wallet.total_coins < coins) return false
+    else return true
   }
 }

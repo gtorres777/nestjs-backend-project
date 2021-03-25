@@ -13,13 +13,20 @@ export class AvatarController {
     @UseGuards(JwtAuthGuard)
     async buyAvatarSet(@Req() req, @Body() body: BuyAvatarSetDto) {
         const aea = await this.service.buySetAvatar(req.user.userId, body.set_name, body.coins)
-        if (aea != null) {
+        if(aea != 301){
+          if (aea != null) {
             return aea
-        } else {
+          } else {
             return {
                 status: 404,
                 message: "No cuenta con las monedas suficientes"
             }
+          }
+        }else{
+          return {
+            status: 301,
+            message: "El usuario ya cuenta con ese outfit"
+          }
         }
     }
 

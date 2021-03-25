@@ -25,6 +25,6 @@ import { AvatarModule } from 'src/avatar/avatar.module';
       }
     ]),
   ],
-  exports: [UserProfileService]
+  exports: [UserProfileService, MongooseModule]
 })
 export class UserProfileModule {}

@@ -86,7 +86,7 @@ export class TalesController {
     console.log("data", data)
     return {
       message: "Se agrego correctamente el cuento a tus cuentos completados",
-      aea: await this.talesService.addTaleCompleted(data, req.user.userId)
+      data: await this.talesService.addTaleCompleted(data, req.user.userId)
     }
   }
 

@@ -8,7 +8,6 @@ import { VideoSchema } from './model/video.schema';
 @Module({
   controllers: [VideosController],
   providers: [VideosService],
-  exports: [VideosService],
   imports: [
     MongooseModule.forFeature([
       {
@@ -16,6 +15,7 @@ import { VideoSchema } from './model/video.schema';
         schema: VideoSchema,
       }
     ]),
-  ]
+  ],
+  exports: [VideosService, MongooseModule],
 })
 export class VideosModule {}

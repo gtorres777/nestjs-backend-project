@@ -15,6 +15,6 @@ import { WalletService } from './wallet.service';
       }
     ])
   ],
-  exports: [WalletService]
+  exports: [WalletService, MongooseModule]
 })
 export class WalletModule {}

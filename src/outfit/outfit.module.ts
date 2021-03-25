@@ -15,6 +15,6 @@ import { OutfitService } from './outfit.service';
       }
     ])
   ],
-  exports: [OutfitService]
+  exports: [OutfitService, MongooseModule]
 })
 export class OutfitModule {}
