@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, forwardRef, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AuthService } from 'src/auth/services';
 import { AvatarService } from 'src/avatar/avatar.service';
 import {CreateProfileUserDto} from 'src/userProfile/dtos/user-profile.dto';
 import {SuscriptionState} from 'src/userProfile/interface/user-profile.interface';
@@ -17,14 +18,18 @@ export class UserService {
     @InjectModel('User') private userModel: Model<User>,
     private userProfileService: UserProfileService,
     private walletService: WalletService,
-    private avatarService: AvatarService
+    private avatarService: AvatarService,
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService
   ) {}
 
-  async addUser(user: CreateUserDto): Promise<User> {
+  async addUser(user: CreateUserDto): Promise<any> {
     const createdUser = new this.userModel(user);
-    const user_saved = await createdUser.save(); 
+    const user_saved = await createdUser.save();
+
+    delete user_saved.password;
     
-    console.log("RESPONSE",user_saved._id)
+    //console.log("RESPONSE",user_saved._id)
 
     const imagen: string = 'https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293__340.jpg';
 
@@ -48,7 +53,14 @@ export class UserService {
     this.avatarService.createAvatar(user_saved._id).subscribe(console.log)
 
 
-    return user_saved
+    const user_validation = await this.authService.login(user_saved)
+
+    const user_response ={
+      name: user_saved.name,
+      email: user_saved.email,
+      access_token: user_validation.access_token 
+    }
+    return user_response
   }
 
   async findOne(user: string): Promise<User | undefined> {

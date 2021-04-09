@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/interface/user.interface';
 import { UserService } from '../../user/user.service';
@@ -6,6 +6,7 @@ import { UserService } from '../../user/user.service';
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(forwardRef(() => UserService))
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
@@ -14,6 +15,8 @@ export class AuthService {
     // console.log('auth.service.ts');
 
     const user = await this.userService.findOne(username);
+
+    console.log("user",user)
 
     if (user && (await user.verifyPassword(pass))) {
       return user;

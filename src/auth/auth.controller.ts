@@ -14,12 +14,19 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req) {
+    console.log(req)
     const data = await this.authService.login(req.user)
     if (data && data.access_token != "") {
       return {
         message: 'Login exitoso',
         avatar: await this.avatarService.getAvatar(data.user._id),
-        data
+        data: {
+          user:{
+            name: data.user.name,
+            email: data.user.email,
+            access_token: data.access_token
+          } 
+        }
       }
     } 
   }
