@@ -32,6 +32,10 @@ export const VideoReferenceSchema = new Schema({
     ref: "Videos",
     required: false
   },
+  _url: {
+    type: String,
+    required: false
+  },
   date: {
     type: Date
   },

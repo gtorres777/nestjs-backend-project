@@ -1,13 +1,17 @@
 import { Body } from '@nestjs/common';
 import { Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { WalletService } from 'src/wallet/wallet.service';
 import { AvatarService } from './avatar.service';
 import { BuyAvatarSetDto } from './dtos/avatar.dto';
 
 @Controller('avatar')
 export class AvatarController {
 
-    constructor(private service: AvatarService) {}
+    constructor(
+		private service: AvatarService,
+		private walletService: WalletService,
+	) {}
 
     @Post('buy_outfit')
     @UseGuards(JwtAuthGuard)
@@ -15,7 +19,7 @@ export class AvatarController {
         const aea = await this.service.buySetAvatar(req.user.userId, body.set_name, body.coins)
         if(aea != 301){
           if (aea != null) {
-            return aea
+            return { avatar:aea , wallet: await this.walletService.getWallet(req.user.userId)}
           } else {
             return {
                 status: 404,

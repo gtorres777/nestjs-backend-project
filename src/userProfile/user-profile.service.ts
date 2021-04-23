@@ -31,12 +31,17 @@ export class UserProfileService {
   }
 
   async attachRandomVideo(): Promise<VideoReference> {
+	  const videoId = await this.videoService.getRandomVideoId()
+	  console.log("AEAA",videoId)
     const videoReference = new this.videoReferenceModel({
-      _videoId: await this.videoService.getRandomVideoId(),
+      _videoId: videoId._VideoId,
+	  _url: videoId._url,
       date: new Date(),
       state: SuscriptionState.ACTIVE,
       time_left: "24 horas"
     })
+
+	console.log("AEA2",videoReference)
     // currentProfile.user_videos.push(videoReference)
     return await videoReference.save()
   }

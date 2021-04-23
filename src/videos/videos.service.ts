@@ -17,10 +17,10 @@ export class VideosService {
         return await new this.videoModel(dto).save()
     }
 
-    async getRandomVideoId(): Promise<string> {
+    async getRandomVideoId(): Promise<any> {
         const allVideos = await this.videoModel.find({})
         const item = allVideos[Math.floor(Math.random() * allVideos.length)];
-        return item._id
+        return { _VideoId: item._id, _url: item.path }
     }
 
 }
