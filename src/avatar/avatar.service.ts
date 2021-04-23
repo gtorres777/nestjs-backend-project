@@ -31,19 +31,20 @@ export class AvatarService {
         return avatar
     }
 
-    async buySetAvatar(userId: string, setName: ListOfSet, coins: number): Promise<Avatar | null | number> {
+    async buySetAvatar(userId: string, setName: ListOfSet, outfitId:string): Promise<Avatar | null | number> {
         
         const avatar = await this.avatarModel.findOne({ _user: userId })
+		const outfit = await this.outfitService.getOneOutfit(outfitId)
         const avatar_sets = avatar.avatar_sets.map(item => item)
         if (avatar_sets.includes(setName)){
           return 301
         }else{
-          const checkCoins = await this.wallerService.checkCoins(userId, coins)
+          const checkCoins = await this.wallerService.checkCoins(userId, outfit.price)
           if (checkCoins) {
             const userAvatar = await this.avatarModel.findOne({ _user: userId })
             userAvatar.avatar_sets.push(setName)
             userAvatar.current_style = setName
-            await this.wallerService.substractCoinsToWallet(userId, coins)
+            await this.wallerService.substractCoinsToWallet(userId, outfit.price)
             return await userAvatar.save()
         } else {
             return null

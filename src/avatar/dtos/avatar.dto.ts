@@ -28,6 +28,6 @@ export class BuyAvatarSetDto {
   @IsEnum(ListOfSet)
   set_name: ListOfSet
 
-  @IsNumber()
-  coins: number
+  @IsString()
+  outfitId: string
 }

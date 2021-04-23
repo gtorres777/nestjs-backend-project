@@ -16,7 +16,7 @@ export class AvatarController {
     @Post('buy_outfit')
     @UseGuards(JwtAuthGuard)
     async buyAvatarSet(@Req() req, @Body() body: BuyAvatarSetDto) {
-        const aea = await this.service.buySetAvatar(req.user.userId, body.set_name, body.coins)
+        const aea = await this.service.buySetAvatar(req.user.userId, body.set_name, body.outfitId)
         if(aea != 301){
           if (aea != null) {
             return { avatar:aea , wallet: await this.walletService.getWallet(req.user.userId)}
