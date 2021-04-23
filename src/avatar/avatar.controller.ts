@@ -9,7 +9,7 @@ export class AvatarController {
 
     constructor(private service: AvatarService) {}
 
-    @Post()
+    @Post('buy_outfit')
     @UseGuards(JwtAuthGuard)
     async buyAvatarSet(@Req() req, @Body() body: BuyAvatarSetDto) {
         const aea = await this.service.buySetAvatar(req.user.userId, body.set_name, body.coins)
@@ -29,5 +29,11 @@ export class AvatarController {
           }
         }
     }
+
+	@Post('equip_outfit')
+	@UseGuards(JwtAuthGuard)
+	async equipOneAvatar(@Req() req, @Body('outfitId') outfitId: string){
+		return await this.service.equipOneAvatar(req.user.userId, outfitId)
+	}
 
 }

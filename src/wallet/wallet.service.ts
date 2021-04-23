@@ -20,6 +20,11 @@ export class WalletService {
     return await wallet.save();
   }
 
+  async getWallet(userId: string): Promise<Wallet> {
+	const wallet = await this.walletModel.findOne({ _user: userId })
+	return wallet
+  }
+
   async addCoinsToWallet(
     idUser: string,
   ): Promise<BaseResponse> {

@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AvatarModule } from 'src/avatar/avatar.module';
+import { WalletModule } from 'src/wallet/wallet.module';
 
 @Module({
   providers: [AuthService, LocalStrategy, JwtStrategy],
@@ -15,6 +16,7 @@ import { AvatarModule } from 'src/avatar/avatar.module';
     forwardRef(() => UserModule),
     PassportModule,
     AvatarModule,
+	WalletModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {

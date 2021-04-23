@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { from, Observable } from 'rxjs';
+import { OutfitService } from 'src/outfit/outfit.service';
 import { WalletService } from 'src/wallet/wallet.service';
+import { UpdateAvatarDto } from './dtos/update-avatar.dto';
 import { Avatar, ListOfSet } from './interface/avatar.interface';
 
 @Injectable()
@@ -10,7 +12,8 @@ export class AvatarService {
 
     constructor(
         @InjectModel("Avatar") private avatarModel: Model<Avatar>,
-        private wallerService: WalletService
+        private wallerService: WalletService,
+		private outfitService: OutfitService,
     ) { }
 
     createAvatar(userId: string): Observable<Avatar> {
@@ -46,5 +49,24 @@ export class AvatarService {
             return null
         }
         }
-            }
+	}
+
+  async updateAvatar(avatar: UpdateAvatarDto, id: string): Promise<Avatar> {
+	return await this.avatarModel.findOneAndUpdate({ _id: id }, <Avatar>avatar, {
+	  new: true,
+	});
+  }
+
+  async equipOneAvatar(userId: string, outfitId: string) {
+	  const outfit = await this.outfitService.getOneOutfit(outfitId)
+	  const users_avatar = await this.getAvatar(userId)
+	  
+	  const update_avatar: UpdateAvatarDto = {
+		  current_style: outfit.outfit_name
+		}
+	  
+	  return await this.updateAvatar(update_avatar, users_avatar.id)
+	}
+
+	
 }
