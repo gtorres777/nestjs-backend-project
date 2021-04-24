@@ -16,11 +16,14 @@ import { BasePagination, Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateTalesCompletedDto, CreateVideoReference } from 'src/userProfile/dtos/user-profile.dto';
+import { WalletService } from 'src/wallet/wallet.service';
 
 @Controller('tales')
 export class TalesController {
   constructor(
-    private readonly talesService: TalesService) { }
+    	private readonly talesService: TalesService,
+    	private readonly walletService: WalletService,
+	) { }
 
   // @Get()
   // getAllTales(): Promise<Tales[]> {
@@ -83,10 +86,10 @@ export class TalesController {
   async addTaleCompleted(
     @Body() data: CreateTalesCompletedDto,
     @Req() req) {
-    console.log("data", data)
     return {
       message: "Se agrego correctamente el cuento a tus cuentos completados",
-      data: await this.talesService.addTaleCompleted(data, req.user.userId)
+      obtained_video: await this.talesService.addTaleCompleted(data, req.user.userId),
+	  user_wallet: await this.walletService.getWallet(req.user.userId)
     }
   }
 

@@ -6,7 +6,7 @@ import { BasePagination, Tales } from './interface/tales.interface';
 import { UpdateTalesDto } from './dto/update-tales.dto';
 import { UserProfileService } from 'src/userProfile/user-profile.service';
 import { CreateTalesCompletedDto, CreateVideoReference } from 'src/userProfile/dtos/user-profile.dto';
-import { ProfileUser, SuscriptionState, TalesCompleted } from 'src/userProfile/interface/user-profile.interface';
+import { ProfileUser, SuscriptionState, TalesCompleted, VideoReference } from 'src/userProfile/interface/user-profile.interface';
 import {BaseResponse} from 'src/helpers/BaseResponse';
 import {WalletService} from 'src/wallet/wallet.service';
 
@@ -92,8 +92,9 @@ export class TalesService {
     }
   }
 
-  async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<ProfileUser> {
+  async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<VideoReference> {
     const userprofile = await this.userProfileService.getProfile(userid);
+    const random_video = await this.userProfileService.attachRandomVideo()
 
     const aeaMano = userprofile.tales_completed.find(tale => data.tale_id === tale.tale_id)
     if (aeaMano) {
@@ -107,14 +108,16 @@ export class TalesService {
         times_read: 1
       })
       const talesCompleteSave = await talesComplete.save()
-      userprofile.user_videos.push(await this.userProfileService.attachRandomVideo())
+      userprofile.user_videos.push( random_video )
       userprofile.tales_completed.push(talesCompleteSave)
 
       //COINS
       await this.walletService.addCoinsToWallet(userid);
     }
 
-    return await userprofile.save();
+	await userprofile.save()
+
+    return random_video;
   }
 
   async updateVideTime(videoId: string, userId: string) : Promise<ProfileUser> {
