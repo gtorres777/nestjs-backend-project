@@ -104,6 +104,7 @@ export class TalesService {
 	  base_response.status = 201
 	  base_response.message = "Cuento terminado anteriormente"
 	  base_response.video_obtained = aeaMano.video_obtained
+      await userprofile.save()
 	
     } else {
         let random_video = await this.userProfileService.attachRandomVideo()
