@@ -92,32 +92,44 @@ export class TalesService {
     }
   }
 
-  async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<VideoReference> {
+  async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<BaseResponse> {
     const userprofile = await this.userProfileService.getProfile(userid);
-    const random_video = await this.userProfileService.attachRandomVideo()
+	const base_response : BaseResponse = {}
 
     const aeaMano = userprofile.tales_completed.find(tale => data.tale_id === tale.tale_id)
     if (aeaMano) {
-      //ACTUALIZAR
-      aeaMano.times_read++
+		console.log("aeamano",aeaMano)
+	  //ACTUALIZAR
+	  aeaMano.times_read++
+	  base_response.status = 201
+	  base_response.message = "Cuento terminado anteriormente"
+	  base_response.video_obtained = aeaMano.video_obtained
+	
     } else {
-      const talesComplete = new this.talesCompleted({
+        let random_video = await this.userProfileService.attachRandomVideo()
+        const talesComplete = new this.talesCompleted({
         tale_id: data.tale_id,
         answered_correctly: data.answered_correctly,
         answered_incorrectly: data.answered_incorrectly,
-        times_read: 1
+        times_read: 1,
+		video_obtained: random_video
       })
       const talesCompleteSave = await talesComplete.save()
       userprofile.user_videos.push( random_video )
       userprofile.tales_completed.push(talesCompleteSave)
+      await userprofile.save()
 
       //COINS
       await this.walletService.addCoinsToWallet(userid);
+
+	  //base response
+	  base_response.status = 202
+	  base_response.message = "Cuento terminado agregado correctamente"
+	  base_response.video_obtained = random_video
     }
 
-	await userprofile.save()
 
-    return random_video;
+    return base_response;
   }
 
   async updateVideTime(videoId: string, userId: string) : Promise<ProfileUser> {

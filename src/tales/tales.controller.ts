@@ -86,11 +86,20 @@ export class TalesController {
   async addTaleCompleted(
     @Body() data: CreateTalesCompletedDto,
     @Req() req) {
-    return {
-      message: "Se agrego correctamente el cuento a tus cuentos completados",
-      obtained_video: await this.talesService.addTaleCompleted(data, req.user.userId),
-	  user_wallet: await this.walletService.getWallet(req.user.userId)
-    }
+	const base_response = await this.talesService.addTaleCompleted(data, req.user.userId)
+		if(base_response.status === 201){
+			return {
+				message: base_response.message,
+				obtained_video: base_response.video_obtained,
+			    user_wallet: await this.walletService.getWallet(req.user.userId)
+			}
+		}else{
+			return {
+			  message: base_response.message,
+			  obtained_video: base_response.video_obtained,
+			  user_wallet: await this.walletService.getWallet(req.user.userId)
+			}
+		}
   }
 
 

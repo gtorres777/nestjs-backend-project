@@ -41,7 +41,6 @@ export class UserProfileService {
       time_left: "24 horas"
     })
 
-	console.log("AEA2",videoReference)
     // currentProfile.user_videos.push(videoReference)
     return await videoReference.save()
   }

@@ -18,6 +18,7 @@ export interface TalesCompleted extends Document {
   readonly answered_correctly: string;
   readonly answered_incorrectly: string;
   times_read?: number;
+  video_obtained?: VideoReference
   createdAt?: Date;
 }
 

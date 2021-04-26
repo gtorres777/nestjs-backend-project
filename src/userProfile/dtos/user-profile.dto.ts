@@ -3,6 +3,18 @@ import { IsArray, IsNumber, IsEmail, IsEnum, IsOptional, IsString, ValidateNeste
 import { SuscriptionState } from '../interface/user-profile.interface';
 import { Type } from "class-transformer";
 
+export class CreateVideoReference {
+  @IsString()
+  _videoId: string
+  
+  @IsDate()
+  date: Date
+
+  @IsEnum(SuscriptionState)
+  @IsString()
+  state: SuscriptionState
+}
+
 export class CreateTalesCompletedDto {
   @IsString()
   tale_id: string;
@@ -16,18 +28,9 @@ export class CreateTalesCompletedDto {
   @IsOptional()
   @IsNumber()
   times_read: number;
-}
 
-export class CreateVideoReference {
-  @IsString()
-  _videoId: string
-  
-  @IsDate()
-  date: Date
-
-  @IsEnum(SuscriptionState)
-  @IsString()
-  state: SuscriptionState
+  @IsOptional()
+  video_obtained: CreateVideoReference;
 }
 
 export class CreateProfileUserDto {

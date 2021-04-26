@@ -3,29 +3,6 @@ import { Schema, Types } from 'mongoose';
 const imagen: string =
   'https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293__340.jpg';
 
-
-export const TalesCompletedSchema = new Schema({
-  tale_id: {
-    type: String,
-    required: true
-  },
-  answered_correctly: {
-    type: String,
-    required: true
-  },
-  answered_incorrectly: {
-    type: String,
-    required: true
-  },
-  times_read: {
-    type: Number,
-    required: false
-  }
-
-},
-  { timestamps: true },
-)
-
 export const VideoReferenceSchema = new Schema({
   _videoId: {
     type: Types.ObjectId,
@@ -48,6 +25,29 @@ export const VideoReferenceSchema = new Schema({
 }, {
   timestamps: true
 })
+
+export const TalesCompletedSchema = new Schema({
+  tale_id: {
+    type: String,
+    required: true
+  },
+  answered_correctly: {
+    type: String,
+    required: true
+  },
+  answered_incorrectly: {
+    type: String,
+    required: true
+  },
+  times_read: {
+    type: Number,
+    required: false
+  },
+  video_obtained: VideoReferenceSchema
+},
+  { timestamps: true },
+)
+
 
 export const ProfileUserSchema = new Schema(
   {
