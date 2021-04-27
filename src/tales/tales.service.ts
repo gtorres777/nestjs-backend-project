@@ -35,9 +35,15 @@ export class TalesService {
   }
 
   async getFavoriteTales(userId: string): Promise<string[]> {
+	  let favoritetales_array_of_objects = []
     const userprofile = await this.userProfileService.getProfile(userId);
     const favorite_tales_array = userprofile.favorite_tales;
-    return favorite_tales_array;
+	const response = favorite_tales_array.map( async tale => {
+			const tale_object = await this.talesModel.findById(tale)
+			favoritetales_array_of_objects.push(tale_object)
+		})
+	await Promise.all(response)
+    return favoritetales_array_of_objects;
   }
   // async getAll(): Promise<Tales[]> {
   //   return await this.talesModel.find({})
