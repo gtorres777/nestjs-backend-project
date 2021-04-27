@@ -97,15 +97,14 @@ export class TalesService {
 	const base_response : BaseResponse = {}
 
     const aeaMano = userprofile.tales_completed.find(tale => data.tale_id === tale.tale_id)
-	const tale = await this.getOneTale(aeaMano.tale_id)
     if (aeaMano) {
-		console.log("aeamano",aeaMano)
 	  //ACTUALIZAR
+	  const tale_update = await this.getOneTale(aeaMano.tale_id)
 	  aeaMano.times_read++
 	  base_response.status = 201
 	  base_response.message = "Cuento terminado anteriormente"
 	  base_response.video_obtained = aeaMano.video_obtained
-	  base_response.tale_title = tale.title
+	  base_response.tale_title = tale_update.title
       await userprofile.save()
 	
     } else {
@@ -117,6 +116,8 @@ export class TalesService {
         times_read: 1,
 		video_obtained: random_video
       })
+	  // data title
+	  const new_tale_finished = await this.getOneTale(data.tale_id)
       const talesCompleteSave = await talesComplete.save()
       userprofile.user_videos.push( random_video )
       userprofile.tales_completed.push(talesCompleteSave)
@@ -129,7 +130,7 @@ export class TalesService {
 	  base_response.status = 202
 	  base_response.message = "Cuento terminado agregado correctamente"
 	  base_response.video_obtained = random_video
-	  base_response.tale_title = tale.title
+	  base_response.tale_title = new_tale_finished.title
     }
 
 
