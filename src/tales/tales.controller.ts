@@ -90,12 +90,14 @@ export class TalesController {
 		if(base_response.status === 201){
 			return {
 				message: base_response.message,
+				tale_title: base_response.tale_title,
 				obtained_video: base_response.video_obtained,
 			    user_wallet: await this.walletService.getWallet(req.user.userId)
 			}
 		}else{
 			return {
 			  message: base_response.message,
+				tale_title: base_response.tale_title,
 			  obtained_video: base_response.video_obtained,
 			  user_wallet: await this.walletService.getWallet(req.user.userId)
 			}

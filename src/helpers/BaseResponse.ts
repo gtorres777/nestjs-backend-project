@@ -9,4 +9,5 @@ export interface BaseResponse {
   stadistics?: Stadistics
   user_data?: {}
   video_obtained?: VideoReference
+  tale_title?: string
 }
