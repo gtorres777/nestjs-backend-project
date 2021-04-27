@@ -30,19 +30,49 @@ export class UserProfileService {
     return await profile.save();
   }
 
-  async attachRandomVideo(): Promise<VideoReference> {
-	  const videoId = await this.videoService.getRandomVideoId()
-	  console.log("AEAA",videoId)
-    const videoReference = new this.videoReferenceModel({
-      _videoId: videoId._VideoId,
-	  _url: videoId._url,
-      date: new Date(),
-      state: SuscriptionState.ACTIVE,
-      time_left: "24 horas"
-    })
+  async attachRandomVideo(user_videos:VideoReference[]): Promise<VideoReference> {
+
+	  //TODO  FALTA VALIDAR QUE EL NUMERO DE VIDEOS SEA SIEMPRE MAYOR A LA CANTIDAD DE CUENTOS
+
+	  if( user_videos.length>0){
+
+	  	  let not_repeated_video_obtained:any
+		  
+			do {
+				not_repeated_video_obtained = await this.videoService.getRandomVideoId()
+				const found = user_videos.some( video => video._videoId.toString() === not_repeated_video_obtained._VideoId.toString())
+				if(!found){
+					break;
+				}
+			} while ( true  )
+			
+			  const videoReference = new this.videoReferenceModel({
+			  _videoId: not_repeated_video_obtained._VideoId,
+			  _url: not_repeated_video_obtained._url,
+			  date: new Date(),
+			  state: SuscriptionState.ACTIVE,
+			  time_left: "24 horas"
+			})
+			   return await videoReference.save()
+
+		  
+
+		}else{
+
+			  const videoId = await this.videoService.getRandomVideoId()
+			  const videoReference = new this.videoReferenceModel({
+			  _videoId: videoId._VideoId,
+			  _url: videoId._url,
+			  date: new Date(),
+			  state: SuscriptionState.ACTIVE,
+			  time_left: "24 horas"
+			})
+			   return await videoReference.save()
+		}
+
+
 
     // currentProfile.user_videos.push(videoReference)
-    return await videoReference.save()
   }
 
   async getAllVideos(id: string): Promise<VideoReference[]> {
@@ -79,7 +109,6 @@ export class UserProfileService {
   async buyTimeForVideo(videoId: string, userId: string, coins: number) : Promise<BaseResponse>{
     //COINS
     const wallet = await this.walletService.substractCoinsToWallet(userId,coins);
-    console.log("bfd",wallet)
     if (wallet.status == 301){
       return {
         status: 301,

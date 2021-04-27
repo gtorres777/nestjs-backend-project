@@ -76,7 +76,6 @@ export class TalesService {
     const userprofile = await this.userProfileService.getProfile(userid);
     const favorite_tales_array: string[] = userprofile.favorite_tales;
     const tale_coincidence = favorite_tales_array.find(tale => tale === tale_id);
-    console.log(tale_coincidence);
     if (tale_coincidence){
       return{
           status: 202,
@@ -108,7 +107,9 @@ export class TalesService {
       await userprofile.save()
 	
     } else {
-        let random_video = await this.userProfileService.attachRandomVideo()
+		let user_videos = userprofile.user_videos
+		console.log("USERVIDS",user_videos)
+        let random_video = await this.userProfileService.attachRandomVideo(user_videos)
         const talesComplete = new this.talesCompleted({
         tale_id: data.tale_id,
         answered_correctly: data.answered_correctly,
