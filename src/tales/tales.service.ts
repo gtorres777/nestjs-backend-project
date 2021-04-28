@@ -52,14 +52,19 @@ export class TalesService {
     const LIMIT = 4
     const userprofile = await this.userProfileService.getProfile(userId);
     const userTalesCompleted = userprofile.tales_completed.map(item => item.tale_id)
+	const favoriteTales = userprofile.favorite_tales
     // const _page = page === 1 ? 0 : page
     const collectionSize = await this.talesModel.count({})
     const allTales = await this.talesModel.find({}).skip((page - 1) * LIMIT).limit(LIMIT)
     const allTalesMapped = allTales.map(item => {
-      if (userTalesCompleted.includes(item._id)) {
-        return {...item.toObject(), times_read: true}
+      if (userTalesCompleted.includes(item._id) && favoriteTales.includes(item._id)) {
+        return {...item.toObject(), times_read: true , added_as_favorite: true}
+      } else if ((userTalesCompleted.includes(item._id) && !favoriteTales.includes(item._id))) {
+        return {...item.toObject(), times_read: true, added_as_favorite: false}
+      } else if ((!userTalesCompleted.includes(item._id) && favoriteTales.includes(item._id))) {
+        return {...item.toObject(), times_read: false, added_as_favorite: true}
       } else {
-        return {...item.toObject(), times_read: false}
+        return {...item.toObject(), times_read: false, added_as_favorite: false}
       }
     })
     // await this.talesModel.deleteMany({})
