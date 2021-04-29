@@ -102,6 +102,27 @@ export class TalesService {
     }
   }
 
+  async removeFavoriteTale(tale_id: string, userid: string) : Promise<BaseResponse> {
+
+	  const userprofile = await this.userProfileService.getProfile(userid)
+	  const favorite_tales_array : string [] = userprofile.favorite_tales
+	  const favorite_tale_position = favorite_tales_array.indexOf(tale_id)
+	  console.log("AEA",favorite_tale_position)
+	  if(favorite_tale_position != -1){
+		  favorite_tales_array.splice(favorite_tale_position,1)
+		  await userprofile.save()
+		  return {
+			  status: 204,
+			  message: "Cuento favorito removido correctamente"
+			}
+	  }else{
+	  	return {
+			  status: 205,
+			  message: "Id de cuento no encontrado"
+			}
+	  }
+	}
+
   async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<BaseResponse> {
     const userprofile = await this.userProfileService.getProfile(userid);
 	const base_response : BaseResponse = {}

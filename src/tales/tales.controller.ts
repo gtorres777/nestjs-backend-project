@@ -80,6 +80,13 @@ export class TalesController {
     return await this.talesService.addFavoriteTale(tale_id, req.user.userId)
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('remove_favorite_tale')
+  async removeFavoriteTale(
+    @Body('tale_id') tale_id: string,
+    @Req() req) {
+    return await this.talesService.removeFavoriteTale(tale_id, req.user.userId)
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('add_tale_completed')
