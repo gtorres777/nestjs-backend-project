@@ -3,6 +3,7 @@ import {
   Body,
   Post,
   Put,
+  Delete,
   Param,
   Get,
   HttpException,
@@ -81,7 +82,7 @@ export class TalesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('remove_favorite_tale')
+  @Delete('remove_favorite_tale')
   async removeFavoriteTale(
     @Body('tale_id') tale_id: string,
     @Req() req) {

@@ -29,7 +29,6 @@ export class WalletService {
     idUser: string,
   ): Promise<BaseResponse> {
     const wallet = await this.walletModel.findOne({ _user: idUser });     
-    console.log(wallet)
     const default_coins_added = 3;
     wallet.total_coins += default_coins_added;
     await wallet.save();
@@ -62,7 +61,6 @@ export class WalletService {
 
   async checkCoins(idUser: string, coins: number): Promise<boolean> {
     const wallet = await this.walletModel.findOne({ _user: idUser });     
-    console.log(wallet, coins)
     if (wallet.total_coins < coins) return false
     else return true
   }

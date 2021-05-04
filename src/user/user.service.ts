@@ -28,8 +28,6 @@ export class UserService {
     const user_saved = await createdUser.save();
 
     delete user_saved.password;
-    
-    //console.log("RESPONSE",user_saved._id)
 
     const imagen: string = 'https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293__340.jpg';
 

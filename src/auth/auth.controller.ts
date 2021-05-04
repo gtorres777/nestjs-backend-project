@@ -16,7 +16,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req) {
-    console.log(req)
     const data = await this.authService.login(req.user)
     if (data && data.access_token != "") {
       return {

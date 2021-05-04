@@ -46,9 +46,9 @@ export class AvatarService {
             userAvatar.current_style = setName
             await this.wallerService.substractCoinsToWallet(userId, outfit.price)
             return await userAvatar.save()
-        } else {
-            return null
-        }
+			} else {
+				return null
+			}
         }
 	}
 

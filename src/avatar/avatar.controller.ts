@@ -1,5 +1,5 @@
 import { Body } from '@nestjs/common';
-import { Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { WalletService } from 'src/wallet/wallet.service';
 import { AvatarService } from './avatar.service';
@@ -34,10 +34,15 @@ export class AvatarController {
         }
     }
 
-	@Post('equip_outfit')
+	@Patch('equip_outfit')
 	@UseGuards(JwtAuthGuard)
 	async equipOneAvatar(@Req() req, @Body('outfitId') outfitId: string){
 		return await this.service.equipOneAvatar(req.user.userId, outfitId)
 	}
 
+	@Get('user_avatar')
+	@UseGuards(JwtAuthGuard)
+	async getUsersAvatar(@Req() req){
+		return await this.service.getAvatar(req.user.userId)
+	}
 }
