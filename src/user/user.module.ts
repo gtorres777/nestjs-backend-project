@@ -1,5 +1,8 @@
+// Project libraries
 import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
+// Project files
 import { AvatarModule } from 'src/avatar/avatar.module';
 import {UserProfileModule} from 'src/userProfile/user-profile.module';
 import {WalletModule} from 'src/wallet/wallet.module';

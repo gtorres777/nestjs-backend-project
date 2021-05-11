@@ -1,3 +1,4 @@
+// Project libraries
 import {
   Controller,
   Body,
@@ -11,6 +12,8 @@ import {
   Req,
   UseGuards
 } from '@nestjs/common';
+
+// Project files
 import { CreateTalesDto } from './dto/tales.dto';
 import { TalesService } from './tales.service';
 import { BasePagination, Tales } from './interface/tales.interface';
@@ -22,14 +25,9 @@ import { WalletService } from 'src/wallet/wallet.service';
 @Controller('tales')
 export class TalesController {
   constructor(
-    	private readonly talesService: TalesService,
-    	private readonly walletService: WalletService,
-	) { }
-
-  // @Get()
-  // getAllTales(): Promise<Tales[]> {
-  //   return this.talesService.getAll()
-  // }
+    private readonly talesService: TalesService,
+    private readonly walletService: WalletService,
+  ) { }
 
   @Get('tales_completed/:page')
   @UseGuards(JwtAuthGuard)
@@ -55,21 +53,8 @@ export class TalesController {
     return tale;
   }
 
-  // @Get('questions/:tale_id')
-  // async getQuestions(@Param('tale_id') tale_id: string): Promise<Tales> {
-  //   const tale = await this.talesService.getQuestions(tale_id);
-  //   if (!tale) {
-  //     throw new HttpException({
-  //       status: HttpStatus.NOT_FOUND,
-  //       error: 'El cuento fue encontrado',
-  //     }, HttpStatus.NOT_FOUND);
-  //   }
-  //   return tale;
-  // } 
-
   @Post()
   addTales(@Body() data: CreateTalesDto): Promise<Tales> {
-    console.log(data);
     return this.talesService.addTales(data);
   }
 
@@ -94,24 +79,23 @@ export class TalesController {
   async addTaleCompleted(
     @Body() data: CreateTalesCompletedDto,
     @Req() req) {
-	const base_response = await this.talesService.addTaleCompleted(data, req.user.userId)
-		if(base_response.status === 201){
-			return {
-				message: base_response.message,
-				tale_title: base_response.tale_title,
-				obtained_video: base_response.video_obtained,
-			    user_wallet: await this.walletService.getWallet(req.user.userId)
-			}
-		}else{
-			return {
-			  message: base_response.message,
-				tale_title: base_response.tale_title,
-			  obtained_video: base_response.video_obtained,
-			  user_wallet: await this.walletService.getWallet(req.user.userId)
-			}
-		}
+    const base_response = await this.talesService.addTaleCompleted(data, req.user.userId)
+    if(base_response.status === 201){
+      return {
+        message: base_response.message,
+        tale_title: base_response.tale_title,
+        obtained_video: base_response.video_obtained,
+        user_wallet: await this.walletService.getWallet(req.user.userId)
+      }
+    }else{
+      return {
+        message: base_response.message,
+        tale_title: base_response.tale_title,
+        obtained_video: base_response.video_obtained,
+        user_wallet: await this.walletService.getWallet(req.user.userId)
+      }
+    }
   }
-
 
   @Put(':id')
   updateTales(
@@ -120,7 +104,6 @@ export class TalesController {
   ): Promise<Tales> {
     return this.talesService.updateTales(data, id);
   }
-
 
   @UseGuards(JwtAuthGuard)
   @Post('test/:id')

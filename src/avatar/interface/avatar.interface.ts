@@ -1,17 +1,17 @@
 import { Document } from 'mongoose';
 
 export enum ListOfSet {
-  DEFAULT = "DEFAULT",
-  TUXEDO = "TUXEDO",
-  COWBOY = "COWBOY",
-  ASTRONAUT = "ASTRONAUT"
+    DEFAULT = "DEFAULT",
+    TUXEDO = "TUXEDO",
+    COWBOY = "COWBOY",
+    ASTRONAUT = "ASTRONAUT"
 }
 
 export interface Avatar extends Document {
-  readonly id?: string;
-  readonly _user?: string;
-  readonly avatar_name?: string;
-  readonly avatar_sets?: ListOfSet[];
-  current_style?: ListOfSet;
+    readonly id?: string;
+    readonly _user?: string;
+    readonly avatar_name?: string;
+    readonly avatar_sets?: ListOfSet[];
+    current_style?: ListOfSet;
 }
 

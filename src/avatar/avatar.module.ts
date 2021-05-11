@@ -1,5 +1,8 @@
+// Project libraries
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
+// Project files
 import { OutfitModule } from 'src/outfit/outfit.module';
 import { WalletModule } from 'src/wallet/wallet.module';
 import { AvatarController } from './avatar.controller';
@@ -11,7 +14,7 @@ import {AvatarSchema} from './models/avatar.schema';
   providers: [AvatarService],
   imports: [
     WalletModule,
-	OutfitModule,
+    OutfitModule,
     MongooseModule.forFeature([
       {
         name: 'Avatar',

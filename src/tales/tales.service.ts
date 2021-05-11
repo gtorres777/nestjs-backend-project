@@ -35,14 +35,14 @@ export class TalesService {
   }
 
   async getFavoriteTales(userId: string): Promise<string[]> {
-	  let favoritetales_array_of_objects = []
+    let favoritetales_array_of_objects = []
     const userprofile = await this.userProfileService.getProfile(userId);
     const favorite_tales_array = userprofile.favorite_tales;
-	const response = favorite_tales_array.map( async tale => {
-			const tale_object = await this.talesModel.findById(tale)
-			favoritetales_array_of_objects.push(tale_object)
-		})
-	await Promise.all(response)
+    const response = favorite_tales_array.map( async tale => {
+      const tale_object = await this.talesModel.findById(tale)
+      favoritetales_array_of_objects.push(tale_object)
+    })
+    await Promise.all(response)
     return favoritetales_array_of_objects;
   }
   // async getAll(): Promise<Tales[]> {
@@ -52,7 +52,7 @@ export class TalesService {
     const LIMIT = 4
     const userprofile = await this.userProfileService.getProfile(userId);
     const userTalesCompleted = userprofile.tales_completed.map(item => item.tale_id)
-	const favoriteTales = userprofile.favorite_tales
+    const favoriteTales = userprofile.favorite_tales
     // const _page = page === 1 ? 0 : page
     const collectionSize = await this.talesModel.count({})
     const allTales = await this.talesModel.find({}).skip((page - 1) * LIMIT).limit(LIMIT)
@@ -89,8 +89,8 @@ export class TalesService {
     const tale_coincidence = favorite_tales_array.find(tale => tale === tale_id);
     if (tale_coincidence){
       return{
-          status: 202,
-          message: "Ya tiene agregado este cuento a sus favoritos",
+        status: 202,
+        message: "Ya tiene agregado este cuento a sus favoritos",
       }
     }else{
       favorite_tales_array.push(tale_id);
@@ -104,53 +104,51 @@ export class TalesService {
 
   async removeFavoriteTale(tale_id: string, userid: string) : Promise<BaseResponse> {
 
-	  const userprofile = await this.userProfileService.getProfile(userid)
-	  const favorite_tales_array : string [] = userprofile.favorite_tales
-	  const favorite_tale_position = favorite_tales_array.indexOf(tale_id)
-	  console.log("AEA",favorite_tale_position)
-	  if(favorite_tale_position != -1){
-		  favorite_tales_array.splice(favorite_tale_position,1)
-		  await userprofile.save()
-		  return {
-			  status: 204,
-			  message: "Cuento favorito removido correctamente"
-			}
-	  }else{
-	  	return {
-			  status: 205,
-			  message: "Id de cuento no encontrado"
-			}
-	  }
-	}
+    const userprofile = await this.userProfileService.getProfile(userid)
+    const favorite_tales_array : string [] = userprofile.favorite_tales
+    const favorite_tale_position = favorite_tales_array.indexOf(tale_id)
+    if(favorite_tale_position != -1){
+      favorite_tales_array.splice(favorite_tale_position,1)
+      await userprofile.save()
+      return {
+        status: 204,
+        message: "Cuento favorito removido correctamente"
+      }
+    }else{
+      return {
+        status: 205,
+        message: "Id de cuento no encontrado"
+      }
+    }
+  }
 
   async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<BaseResponse> {
     const userprofile = await this.userProfileService.getProfile(userid);
-	const base_response : BaseResponse = {}
+    const base_response : BaseResponse = {}
 
     const aeaMano = userprofile.tales_completed.find(tale => data.tale_id === tale.tale_id)
     if (aeaMano) {
-	  //ACTUALIZAR
-	  const tale_update = await this.getOneTale(aeaMano.tale_id)
-	  aeaMano.times_read++
-	  base_response.status = 201
-	  base_response.message = "Cuento terminado anteriormente"
-	  base_response.video_obtained = aeaMano.video_obtained
-	  base_response.tale_title = tale_update.title
+      //ACTUALIZAR
+      const tale_update = await this.getOneTale(aeaMano.tale_id)
+      aeaMano.times_read++
+      base_response.status = 201
+      base_response.message = "Cuento terminado anteriormente"
+      base_response.video_obtained = aeaMano.video_obtained
+      base_response.tale_title = tale_update.title
       await userprofile.save()
-	
+
     } else {
-		let user_videos = userprofile.user_videos
-		console.log("USERVIDS",user_videos)
-        let random_video = await this.userProfileService.attachRandomVideo(user_videos)
-        const talesComplete = new this.talesCompleted({
+      let user_videos = userprofile.user_videos
+      let random_video = await this.userProfileService.attachRandomVideo(user_videos)
+      const talesComplete = new this.talesCompleted({
         tale_id: data.tale_id,
         answered_correctly: data.answered_correctly,
         answered_incorrectly: data.answered_incorrectly,
         times_read: 1,
-		video_obtained: random_video
+        video_obtained: random_video
       })
-	  // data title
-	  const new_tale_finished = await this.getOneTale(data.tale_id)
+      // data title
+      const new_tale_finished = await this.getOneTale(data.tale_id)
       const talesCompleteSave = await talesComplete.save()
       userprofile.user_videos.push( random_video )
       userprofile.tales_completed.push(talesCompleteSave)
@@ -159,11 +157,11 @@ export class TalesService {
       //COINS
       await this.walletService.addCoinsToWallet(userid);
 
-	  //base response
-	  base_response.status = 202
-	  base_response.message = "Cuento terminado agregado correctamente"
-	  base_response.video_obtained = random_video
-	  base_response.tale_title = new_tale_finished.title
+      //base response
+      base_response.status = 202
+      base_response.message = "Cuento terminado agregado correctamente"
+      base_response.video_obtained = random_video
+      base_response.tale_title = new_tale_finished.title
     }
 
 

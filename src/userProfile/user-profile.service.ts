@@ -1,7 +1,9 @@
+// Project libraries
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { time } from 'console';
 import { Model } from 'mongoose';
+
+// Project files
 import {BaseResponse} from 'src/helpers/BaseResponse';
 import getWeek from 'src/helpers/getWeek';
 import { VideosService } from 'src/videos/videos.service';
@@ -32,43 +34,43 @@ export class UserProfileService {
 
   async attachRandomVideo(user_videos:VideoReference[]): Promise<VideoReference> {
 
-	  //TODO  FALTA VALIDAR QUE EL NUMERO DE VIDEOS SEA SIEMPRE MAYOR A LA CANTIDAD DE CUENTOS
+    //TODO  FALTA VALIDAR QUE EL NUMERO DE VIDEOS SEA SIEMPRE MAYOR A LA CANTIDAD DE CUENTOS
 
-	  if( user_videos.length>0){
+    if( user_videos.length>0){
 
-	  	  let not_repeated_video_obtained:any
-		  
-			do {
-				not_repeated_video_obtained = await this.videoService.getRandomVideoId()
-				const found = user_videos.some( video => video._videoId.toString() === not_repeated_video_obtained._VideoId.toString())
-				if(!found){
-					break;
-				}
-			} while ( true  )
-			
-			  const videoReference = new this.videoReferenceModel({
-			  _videoId: not_repeated_video_obtained._VideoId,
-			  _url: not_repeated_video_obtained._url,
-			  date: new Date(),
-			  state: SuscriptionState.ACTIVE,
-			  time_left: "24 horas"
-			})
-			   return await videoReference.save()
+      let not_repeated_video_obtained:any
 
-		  
+      do {
+        not_repeated_video_obtained = await this.videoService.getRandomVideoId()
+        const found = user_videos.some( video => video._videoId.toString() === not_repeated_video_obtained._VideoId.toString())
+        if(!found){
+          break;
+        }
+      } while ( true  )
 
-		}else{
+      const videoReference = new this.videoReferenceModel({
+        _videoId: not_repeated_video_obtained._VideoId,
+        _url: not_repeated_video_obtained._url,
+        date: new Date(),
+        state: SuscriptionState.ACTIVE,
+        time_left: "24 horas"
+      })
+      return await videoReference.save()
 
-			  const videoId = await this.videoService.getRandomVideoId()
-			  const videoReference = new this.videoReferenceModel({
-			  _videoId: videoId._VideoId,
-			  _url: videoId._url,
-			  date: new Date(),
-			  state: SuscriptionState.ACTIVE,
-			  time_left: "24 horas"
-			})
-			   return await videoReference.save()
-		}
+
+
+    }else{
+
+      const videoId = await this.videoService.getRandomVideoId()
+      const videoReference = new this.videoReferenceModel({
+        _videoId: videoId._VideoId,
+        _url: videoId._url,
+        date: new Date(),
+        state: SuscriptionState.ACTIVE,
+        time_left: "24 horas"
+      })
+      return await videoReference.save()
+    }
 
 
 
@@ -117,18 +119,18 @@ export class UserProfileService {
         
       }
     } else{
-    const userprofile = await this.profileUserModel.findOne({ _user: userId });
-    const video = userprofile.user_videos.filter(item => item._videoId == videoId)[0]
-    // const test = new Date("2021-03-16T18:43:13.308Z");
-    const time_user_video = video.date
+      const userprofile = await this.profileUserModel.findOne({ _user: userId });
+      const video = userprofile.user_videos.filter(item => item._videoId == videoId)[0]
+      // const test = new Date("2021-03-16T18:43:13.308Z");
+      const time_user_video = video.date
 
-    if(this.getHours(time_user_video) >= 24)
-      video.date = new Date()
-    else
-      video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
+      if(this.getHours(time_user_video) >= 24)
+        video.date = new Date()
+      else
+        video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
 
-    video.state = SuscriptionState.ACTIVE
-    await userprofile.save()
+      video.state = SuscriptionState.ACTIVE
+      await userprofile.save()
 
       return {
         status: 201,

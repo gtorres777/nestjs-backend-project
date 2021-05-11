@@ -1,13 +1,16 @@
+// Project libraries
 import { Injectable, forwardRef, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
+// Project files
 import { AuthService } from 'src/auth/services';
 import { AvatarService } from 'src/avatar/avatar.service';
-import {CreateProfileUserDto} from 'src/userProfile/dtos/user-profile.dto';
-import {SuscriptionState} from 'src/userProfile/interface/user-profile.interface';
-import {UserProfileService} from 'src/userProfile/user-profile.service';
-import {CreateWalletDto} from 'src/wallet/dtos/wallet.dto';
-import {WalletService} from 'src/wallet/wallet.service';
+import { CreateProfileUserDto } from 'src/userProfile/dtos/user-profile.dto';
+import { SuscriptionState } from 'src/userProfile/interface/user-profile.interface';
+import { UserProfileService } from 'src/userProfile/user-profile.service';
+import { CreateWalletDto } from 'src/wallet/dtos/wallet.dto';
+import { WalletService } from 'src/wallet/wallet.service';
 import { CreateUserDto } from './dtos/user.dto';
 import { User } from './interface/user.interface';
 

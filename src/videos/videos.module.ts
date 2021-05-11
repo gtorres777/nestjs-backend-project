@@ -1,7 +1,10 @@
+// Project libraries
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
+// Project files
 import { VideosController } from './videos.controller';
 import { VideosService } from './videos.service';
-import { MongooseModule } from '@nestjs/mongoose';
 import { VideoSchema } from './model/video.schema';
 
 

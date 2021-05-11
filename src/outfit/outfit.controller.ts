@@ -1,5 +1,8 @@
+// Project libraries
 import { Body } from '@nestjs/common';
 import { Controller, Get, Post } from '@nestjs/common';
+
+// Project files
 import { CreateOutfitDto } from './dtos/outfit.dto';
 import { OutfitService } from './outfit.service';
 

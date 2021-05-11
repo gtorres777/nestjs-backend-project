@@ -1,4 +1,7 @@
+// Project libraries
 import { Controller, Post, Req, UseGuards } from '@nestjs/common';
+
+// Project files
 import { AuthService } from './services/auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AvatarService } from 'src/avatar/avatar.service';

@@ -1,6 +1,9 @@
+// Project libraries
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import {WalletSchema} from './models/wallet.schema';
+
+// Project files
+import { WalletSchema } from './models/wallet.schema';
 import { WalletController } from './wallet.controller';
 import { WalletService } from './wallet.service';
 

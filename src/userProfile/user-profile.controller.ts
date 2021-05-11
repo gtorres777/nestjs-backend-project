@@ -1,8 +1,11 @@
+// Project libraries
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+
+// Project files
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateProfileUserDto } from "./dtos/user-profile.dto";
 import { ProfileUser, VideoReference } from "./interface/user-profile.interface";
-import {buyTimeForVideo} from './interface/uservideos.interface';
+import { buyTimeForVideo } from './interface/uservideos.interface';
 import { UserProfileService } from "./user-profile.service";
 
 @Controller('profile')
@@ -10,8 +13,6 @@ export class UserProfileController {
 
   constructor(private readonly userProfileService: UserProfileService) {}
 
-
-  // @UseGuards(JwtAuthGuard)
   @Post()
   addProfile(
     @Req() req,

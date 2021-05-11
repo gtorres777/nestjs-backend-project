@@ -1,4 +1,7 @@
+// Project libraries
 import { Body, Controller, Post, HttpException, HttpStatus, UseFilters } from '@nestjs/common';
+
+// Project files
 import { BadRequestFilter } from 'src/helpers/bad-request.filter';
 import { MongoExceptionFilter } from 'src/helpers/mongo-exception.filter';
 import { CreateUserDto } from './dtos/user.dto';

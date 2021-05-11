@@ -1,14 +1,17 @@
+// Project libraries
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {BaseResponse} from 'src/helpers/BaseResponse';
-import {CreateWalletDto} from './dtos/wallet.dto';
-import {Wallet} from './interface/wallet.interface';
+
+// Project files
+import { BaseResponse } from 'src/helpers/BaseResponse';
+import { CreateWalletDto } from './dtos/wallet.dto';
+import { Wallet } from './interface/wallet.interface';
 
 @Injectable()
 export class WalletService {
   constructor(
-  @InjectModel('Wallet') private walletModel: Model<Wallet>
+    @InjectModel('Wallet') private walletModel: Model<Wallet>
   ){}
 
 
@@ -21,8 +24,8 @@ export class WalletService {
   }
 
   async getWallet(userId: string): Promise<Wallet> {
-	const wallet = await this.walletModel.findOne({ _user: userId })
-	return wallet
+    const wallet = await this.walletModel.findOne({ _user: userId })
+    return wallet
   }
 
   async addCoinsToWallet(

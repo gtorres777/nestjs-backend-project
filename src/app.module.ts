@@ -1,28 +1,32 @@
+// Project libraries
 import { Module } from '@nestjs/common';
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
+import AdminBro from 'admin-bro';
+import { AdminModule } from '@admin-bro/nestjs';
+import * as AdminBroMongoose from '@admin-bro/mongoose';
+import { Model } from 'mongoose';
+
+// Project files
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { User } from './user/interface/user.interface';
+import { Tales } from './tales/interface/tales.interface';
+import { Avatar } from './avatar/interface/avatar.interface';
+import { Outfit } from './outfit/interface/outfit.interface';
+import { Videos } from './videos/interface/videos.interface';
+import { Wallet } from './wallet/interface/wallet.interface';
+import { ProfileUser } from './userProfile/interface/user-profile.interface';
 import { UserModule } from './user/user.module';
 import { TalesModule } from './tales/tales.module';
 import { AuthModule } from './auth/auth.module';
 import { UserProfileModule } from './userProfile/user-profile.module';
-import { ConfigModule } from '@nestjs/config';
 import { WalletModule } from './wallet/wallet.module';
 import { AvatarModule } from './avatar/avatar.module';
 import { SetsModule } from './sets/sets.module';
-import AdminBro from 'admin-bro';
 import { OutfitModule } from './outfit/outfit.module';
 import { VideosModule } from './videos/videos.module';
-import { AdminModule } from '@admin-bro/nestjs';
-import * as AdminBroMongoose from '@admin-bro/mongoose';
-import { Model } from 'mongoose';
-import { User } from './user/interface/user.interface';
-import { Tales } from './tales/interface/tales.interface';
-import {Avatar} from './avatar/interface/avatar.interface';
-import {Outfit} from './outfit/interface/outfit.interface';
-import {Videos} from './videos/interface/videos.interface';
-import {Wallet} from './wallet/interface/wallet.interface';
-import {ProfileUser} from './userProfile/interface/user-profile.interface';
+
 AdminBro.registerAdapter(AdminBroMongoose);
 
 @Module({
@@ -69,7 +73,7 @@ AdminBro.registerAdapter(AdminBroMongoose);
         videosModel: Model<Videos>,
         userprofileModel: Model<ProfileUser>,
         walletModel: Model<Wallet>,
-        ) => ({
+      ) => ({
         adminBroOptions: {
           rootPath: "/admin",
           resources: [

@@ -1,12 +1,15 @@
+// Project libraries
 import { Module, forwardRef } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+// Project files
 import { UserModule } from '../user/user.module';
 import { AuthService } from './services/auth.service';
 import { LocalStrategy } from './strategy/local.strategy';
 import { AuthController } from './auth.controller';
-import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AvatarModule } from 'src/avatar/avatar.module';
 import { WalletModule } from 'src/wallet/wallet.module';
 
@@ -16,7 +19,7 @@ import { WalletModule } from 'src/wallet/wallet.module';
     forwardRef(() => UserModule),
     PassportModule,
     AvatarModule,
-	WalletModule,
+    WalletModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {

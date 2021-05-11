@@ -1,6 +1,9 @@
+// Project libraries
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
+// Project files
 import { CreateOutfitDto } from './dtos/outfit.dto';
 import { Outfit } from './interface/outfit.interface';
 
