@@ -10,8 +10,9 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - .:/app
+      - .:/usr/src/app
       - /app/node_modules
+    command: /usr/src/app/entrypoint.sh
 
   mongo:
     image: 'mongo'

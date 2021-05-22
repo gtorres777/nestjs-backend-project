@@ -4,7 +4,7 @@ import { ListOfSet } from 'src/avatar/interface/avatar.interface';
 export class CreateOutfitDto {
   @IsOptional()
   @IsString()
-  id: string;
+  id?: string;
 
   @IsString()
   outfit_image: string;
@@ -14,7 +14,7 @@ export class CreateOutfitDto {
 
   @IsOptional()
   @IsString()
-  type: string;
+  type?: string;
 
   @IsNumber()
   price: number;

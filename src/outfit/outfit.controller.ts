@@ -1,12 +1,14 @@
 // Project libraries
-import { Body } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, UseFilters } from '@nestjs/common';
 import { Controller, Get, Post } from '@nestjs/common';
 
 // Project files
 import { CreateOutfitDto } from './dtos/outfit.dto';
 import { OutfitService } from './outfit.service';
+import { BadRequestFilter } from 'src/helpers/bad-request.filter';
 
 @Controller('outfit')
+@UseFilters(BadRequestFilter)
 export class OutfitController {
 
     constructor(
@@ -14,13 +16,22 @@ export class OutfitController {
     ) {}
 
     @Get()
-    getAll() {
-        return this.service.getAllOutfit()
+    async getAll() {
+        return await this.service.getAllOutfit()
     }
 
     @Post()
-    createOutfit(@Body() data: CreateOutfitDto) {
-        return this.service.addNewOutfit(data)
+    async createOutfit(@Body() data: CreateOutfitDto) {
+
+        const response = await this.service.addNewOutfit(data)
+
+        if (response){
+            return response
+        } else {
+            throw new HttpException(
+                'No se puede agregar un mismo tipo de outfit que tenga el mismo nombre que uno existente',
+                HttpStatus.BAD_REQUEST)
+        }
     }
 
 }

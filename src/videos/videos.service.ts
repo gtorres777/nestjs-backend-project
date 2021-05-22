@@ -1,5 +1,5 @@
 // Project libraries
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -12,18 +12,43 @@ export class VideosService {
 
     constructor(
         @InjectModel("Videos") private videoModel: Model<Videos>
-    ) {
+    ) {}
 
+    async getAllVideos() : Promise<Videos[]> {
+        return this.videoModel.find({})
     }
 
     async createVideo(dto: CreateVideoDto) : Promise<Videos> {
-        return await new this.videoModel(dto).save()
+
+        if (!dto){
+
+            throw new BadRequestException('null body values')
+
+        } else {
+
+            const videos = await this.getAllVideos()
+
+            const videos_url = videos.map( video => video.path )
+
+            if ( videos_url.includes(dto.path) ){
+
+                return null
+
+            } else {
+
+                return await new this.videoModel(dto).save()
+            }
+
+        }
+
     }
 
     async getRandomVideoId(): Promise<any> {
+
         const allVideos = await this.videoModel.find({})
-        const item = allVideos[Math.floor(Math.random() * allVideos.length)];
-        return { _VideoId: item._id, _url: item.path }
+        const random_video = allVideos[Math.floor(Math.random() * allVideos.length)];
+        return { _VideoId: random_video._id, _url: random_video.path }
+
     }
 
 }

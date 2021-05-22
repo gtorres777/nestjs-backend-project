@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 
 
 @Controller('user')
+@UseFilters(BadRequestFilter)
 export class UserController {
 
   constructor(private readonly userService: UserService) {}
