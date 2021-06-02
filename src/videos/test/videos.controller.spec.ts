@@ -5,17 +5,11 @@ import { closeInMongodConnection, rootMongooseTestModule } from 'src/helpers/tes
 import { VideosController } from '../videos.controller';
 import { VideoSchema } from '../model/video.schema';
 import { VideosService } from '../videos.service';
-import { CreateVideoDto } from '../dtos/videos.dto';
+import { new_video3 } from 'src/helpers/test-utils/fake-data/fake-data';
 
 describe('VideosController', () => {
 
     let controller: VideosController;
-
-    const new_video: CreateVideoDto = {
-        title:"video3",
-        path:"http://urlvideo3",
-        img:"coverpage3"
-    }
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -33,19 +27,19 @@ describe('VideosController', () => {
     describe('addVideos', () => {
 
         it('should create a Video', async () => {
-            const result = await controller.addVideos(new_video)
+            const result = await controller.addVideos(new_video3)
             expect(result).not.toBeNull()
             expect(result._id).not.toBeNull()
-            expect(result.title).toEqual(new_video.title)
-            expect(result.img).toEqual(new_video.img)
-            expect(result.path).toEqual(new_video.path)
+            expect(result.title).toEqual(new_video3.title)
+            expect(result.img).toEqual(new_video3.img)
+            expect(result.path).toEqual(new_video3.path)
         });
 
         it('should not create a Video with an existing path', async () => {
 
             try {
 
-                await controller.addVideos(new_video)
+                await controller.addVideos(new_video3)
 
             } catch (error) {
 

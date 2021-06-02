@@ -1,21 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Error } from 'mongoose'
 
 import { closeInMongodConnection, rootMongooseTestModule } from 'src/helpers/test-utils/mongo/MongooseTestModule';
 import { VideoSchema } from '../model/video.schema';
 import { VideosService } from '../videos.service';
-import { CreateVideoDto } from '../dtos/videos.dto';
+import { new_video3 } from 'src/helpers/test-utils/fake-data/fake-data';
 
 describe('VideosService', () => {
 
     let service: VideosService;
-
-    const new_video: CreateVideoDto = {
-        title:"video3",
-        path:"http://urlvideo3",
-        img:"coverpage3"
-    }
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -52,18 +45,18 @@ describe('VideosService', () => {
 
         it('should create video', async () => {
 
-            const video = await service.createVideo(new_video)
+            const video = await service.createVideo(new_video3)
             expect(video).not.toBeNull();
             expect(video._id).not.toBeNull();
-            expect(video.title).toEqual(new_video.title)
-            expect(video.path).toEqual(new_video.path)
-            expect(video.img).toEqual(new_video.img)
+            expect(video.title).toEqual(new_video3.title)
+            expect(video.path).toEqual(new_video3.path)
+            expect(video.img).toEqual(new_video3.img)
 
         });
 
         it('should not add new video with an existing video_path', async () => {
 
-            expect( await service.createVideo(new_video) ).toBeNull()
+            expect( await service.createVideo(new_video3) ).toBeNull()
 
         })
 

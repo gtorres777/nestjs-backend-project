@@ -34,7 +34,7 @@ export class CreateQuestionDto {
 export class CreateTalesDto {
   @IsOptional()
   @IsString()
-  id: string;
+  id?: string;
 
   @IsString()
   title: string;

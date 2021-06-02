@@ -27,16 +27,16 @@ export class CreateTalesCompletedDto {
 
   @IsOptional()
   @IsNumber()
-  times_read: number;
+  times_read?: number;
 
   @IsOptional()
-  video_obtained: CreateVideoReference;
+  video_obtained?: CreateVideoReference;
 }
 
 export class CreateProfileUserDto {
   @IsOptional()
   @IsString()
-  id: string;
+  id?: string;
 
   @IsString()
   name: string;

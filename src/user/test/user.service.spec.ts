@@ -19,22 +19,11 @@ import { OutfitService } from 'src/outfit/outfit.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { OutfitSchema } from 'src/outfit/models/outfit.schema';
+import { new_user, new_user2 } from 'src/helpers/test-utils/fake-data/fake-data';
 
 describe('UserService', () => {
 
     let service: UserService;
-
-    const new_user: CreateUserDto = {
-        name:"tux1",
-        email:"tux1@gmail.com",
-        password:"aeamano"
-    }
-
-    const new_user2: CreateUserDto = {
-        name:"tux2",
-        email:"tux2@gmail.com",
-        password:"aeamano"
-    }
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -98,11 +87,13 @@ describe('UserService', () => {
         })
 
         it('should create user', async () => {
+
             const user = await service.addUser(new_user)
             expect(user).not.toBeNull();
             expect(user._id).not.toBeNull();
             expect(user.name).toEqual(new_user.name)
             expect(user.email).toEqual(new_user.email)
+
         });
 
         it('should not create user with an existing email', async () => {
@@ -119,10 +110,13 @@ describe('UserService', () => {
         });
 
         it('should return access_token', async () => {
+
             const user = await service.addUser(new_user2)
+
             expect(user).not.toBeNull();
             expect(user._id).not.toBeNull();
             expect(user.access_token).not.toBeNull()
+
         });
     })
 

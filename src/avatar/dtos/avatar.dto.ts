@@ -7,7 +7,7 @@ import { ListOfSet } from '../interface/avatar.interface';
 export class CreateAvatarDto {
     @IsOptional()
     @IsString()
-    id: string;
+    id?: string;
 
     @IsOptional()
     @IsString()
@@ -15,7 +15,7 @@ export class CreateAvatarDto {
 
     @IsOptional()
     @IsString()
-    avatar_name: string;
+    avatar_name?: string;
 
     @IsArray()
     @IsString({each: true})

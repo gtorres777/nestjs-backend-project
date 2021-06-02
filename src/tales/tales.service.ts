@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { CreateTalesDto, UtilsDto } from './dto/tales.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -20,162 +20,298 @@ export class TalesService {
   ) { }
 
   async addTales(tales: CreateTalesDto): Promise<Tales> {
-    const createdTales = new this.talesModel(tales);
-    return await createdTales.save();
+
+    if (!tales){
+
+      throw new BadRequestException('null body values')
+
+    } else {
+
+      const createdTales = new this.talesModel(tales);
+      return await createdTales.save();
+
+    }
+
   }
 
   async updateTales(tales: UpdateTalesDto, id: string): Promise<Tales> {
-    return await this.talesModel.findOneAndUpdate({ _id: id }, <Tales>tales, {
-      new: true,
-    });
+
+    if (!tales) {
+
+      throw new BadRequestException('null body values')
+
+    } else if (!id) {
+
+      throw new BadRequestException('Missing ID from tale')
+
+    } else {
+
+      return await this.talesModel.findOneAndUpdate({ _id: id }, <Tales>tales, {
+        new: true,
+      });
+
+    }
   }
 
   async getOneTale(id: string): Promise<Tales> {
-    return await this.talesModel.findById(id, 'content title _id');
+
+    if (!id) {
+
+      throw new BadRequestException('Missing ID from tale')
+
+    } else {
+
+      const tale = await this.talesModel.findById(id, 'content title _id');
+
+      if (!tale) {
+
+        throw new NotFoundException('No tale found for the given tale ID')
+
+      } else {
+
+        return tale
+      }
+
+    }
+
+  }
+
+  async addFavoriteTale(tale_id: string, userid: string): Promise<BaseResponse> {
+
+    if (!userid) {
+
+      throw new BadRequestException('Missing ID from user')
+
+    } else if (!tale_id) {
+
+      throw new BadRequestException('Missing ID from tale')
+
+    } else {
+
+      const userprofile = await this.userProfileService.getProfile(userid);
+
+      const favorite_tales_array: string[] = userprofile.favorite_tales;
+
+      const tale_coincidence = favorite_tales_array.find(tale => tale === tale_id);
+
+      if (tale_coincidence) {
+
+        return{
+          status: 202,
+          message: "Ya tiene agregado este cuento a sus favoritos",
+        }
+
+      } else {
+
+        favorite_tales_array.push(tale_id);
+
+        await userprofile.save();
+
+        return {
+          status: 202,
+          message: "Cuento favorito agregado correctamente",
+        }
+
+      }
+
+    }
   }
 
   async getFavoriteTales(userId: string): Promise<string[]> {
-    let favoritetales_array_of_objects = []
-    const userprofile = await this.userProfileService.getProfile(userId);
-    const favorite_tales_array = userprofile.favorite_tales;
-    const response = favorite_tales_array.map( async tale => {
-      const tale_object = await this.talesModel.findById(tale)
-      favoritetales_array_of_objects.push(tale_object)
-    })
-    await Promise.all(response)
-    return favoritetales_array_of_objects;
-  }
-  // async getAll(): Promise<Tales[]> {
-  //   return await this.talesModel.find({})
-  // }
-  async getTalesCompleted(userId: string, page: number): Promise<BasePagination<Tales[]>> {
-    const LIMIT = 4
-    const userprofile = await this.userProfileService.getProfile(userId);
-    const userTalesCompleted = userprofile.tales_completed.map(item => item.tale_id)
-    const favoriteTales = userprofile.favorite_tales
-    // const _page = page === 1 ? 0 : page
-    const collectionSize = await this.talesModel.count({})
-    const allTales = await this.talesModel.find({}).skip((page - 1) * LIMIT).limit(LIMIT)
-    const allTalesMapped = allTales.map(item => {
-      if (userTalesCompleted.includes(item._id) && favoriteTales.includes(item._id)) {
-        return {...item.toObject(), times_read: true , added_as_favorite: true}
-      } else if ((userTalesCompleted.includes(item._id) && !favoriteTales.includes(item._id))) {
-        return {...item.toObject(), times_read: true, added_as_favorite: false}
-      } else if ((!userTalesCompleted.includes(item._id) && favoriteTales.includes(item._id))) {
-        return {...item.toObject(), times_read: false, added_as_favorite: true}
-      } else {
-        return {...item.toObject(), times_read: false, added_as_favorite: false}
-      }
-    })
-    // await this.talesModel.deleteMany({})
-    return {
-      data: allTalesMapped,
-      currentPage: allTales.length > 0 ? page : 1,
-      lastPage: allTales.length > 0 ? Math.ceil(collectionSize / LIMIT) : 1, 
-      perPage: LIMIT
-    }
-  }
 
-  
-  // async getQuestions(tale_id: string): Promise<Tales> {
-  //   return await this.talesModel.findById(tale_id)
-  //   .select('questions._id questions.question questions.alternative questions.correct_answer') 
-  //TODO Preguntar a chalo si el correct answer va o no va
-  // }
+    if (!userId) {
 
-  async addFavoriteTale(tale_id: string, userid: string): Promise<BaseResponse> {
-    const userprofile = await this.userProfileService.getProfile(userid);
-    const favorite_tales_array: string[] = userprofile.favorite_tales;
-    const tale_coincidence = favorite_tales_array.find(tale => tale === tale_id);
-    if (tale_coincidence){
-      return{
-        status: 202,
-        message: "Ya tiene agregado este cuento a sus favoritos",
-      }
-    }else{
-      favorite_tales_array.push(tale_id);
-      await userprofile.save();
-      return {
-        status: 202,
-        message: "Cuento favorito agregado correctamente",
-      }
+      throw new BadRequestException('Missing ID from user')
+
+    } else {
+
+      let favoritetales_array_of_objects = []
+
+      const userprofile = await this.userProfileService.getProfile(userId);
+
+      const favorite_tales_array = userprofile.favorite_tales;
+
+      const response = favorite_tales_array.map( async tale => {
+
+        const tale_object = await this.talesModel.findById(tale)
+        favoritetales_array_of_objects.push(tale_object)
+
+      })
+
+      await Promise.all(response)
+
+      return favoritetales_array_of_objects;
+
     }
+
   }
 
   async removeFavoriteTale(tale_id: string, userid: string) : Promise<BaseResponse> {
 
-    const userprofile = await this.userProfileService.getProfile(userid)
-    const favorite_tales_array : string [] = userprofile.favorite_tales
-    const favorite_tale_position = favorite_tales_array.indexOf(tale_id)
-    if(favorite_tale_position != -1){
-      favorite_tales_array.splice(favorite_tale_position,1)
-      await userprofile.save()
-      return {
-        status: 204,
-        message: "Cuento favorito removido correctamente"
-      }
-    }else{
-      return {
-        status: 205,
-        message: "Id de cuento no encontrado"
-      }
-    }
-  }
+    if (!userid) {
 
-  async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<BaseResponse> {
-    const userprofile = await this.userProfileService.getProfile(userid);
-    const base_response : BaseResponse = {}
+      throw new BadRequestException('Missing ID from user')
 
-    const aeaMano = userprofile.tales_completed.find(tale => data.tale_id === tale.tale_id)
-    if (aeaMano) {
-      //ACTUALIZAR
-      const tale_update = await this.getOneTale(aeaMano.tale_id)
-      aeaMano.times_read++
-      base_response.status = 201
-      base_response.message = "Cuento terminado anteriormente"
-      base_response.video_obtained = aeaMano.video_obtained
-      base_response.tale_title = tale_update.title
-      await userprofile.save()
+    } else if (!tale_id) {
+
+      throw new BadRequestException('Missing ID from tale')
 
     } else {
-      let user_videos = userprofile.user_videos
-      let random_video = await this.userProfileService.attachRandomVideo(user_videos)
-      const talesComplete = new this.talesCompleted({
-        tale_id: data.tale_id,
-        answered_correctly: data.answered_correctly,
-        answered_incorrectly: data.answered_incorrectly,
-        times_read: 1,
-        video_obtained: random_video
-      })
-      // data title
-      const new_tale_finished = await this.getOneTale(data.tale_id)
-      const talesCompleteSave = await talesComplete.save()
-      userprofile.user_videos.push( random_video )
-      userprofile.tales_completed.push(talesCompleteSave)
-      await userprofile.save()
 
-      //COINS
-      await this.walletService.addCoinsToWallet(userid);
+      const userprofile = await this.userProfileService.getProfile(userid)
 
-      //base response
-      base_response.status = 202
-      base_response.message = "Cuento terminado agregado correctamente"
-      base_response.video_obtained = random_video
-      base_response.tale_title = new_tale_finished.title
+      const favorite_tales_array : string [] = userprofile.favorite_tales
+
+      const favorite_tale_position = favorite_tales_array.indexOf(tale_id)
+
+      if (favorite_tale_position != -1) {
+
+        favorite_tales_array.splice(favorite_tale_position,1)
+
+        await userprofile.save()
+
+        return {
+          status: 204,
+          message: "Cuento favorito removido correctamente"
+        }
+
+      } else {
+
+        return {
+          status: 205,
+          message: "Id de cuento no encontrado"
+        }
+
+      }
+
     }
 
-
-    return base_response;
   }
 
-  async updateVideTime(videoId: string, userId: string) : Promise<ProfileUser> {
-    const userprofile = await this.userProfileService.getProfile(userId);
-    const video = userprofile.user_videos.filter(item => item._videoId == videoId)[0]
-    video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
-    video.state = SuscriptionState.ACTIVE
-    // video.set("state", SuscriptionState.ACTIVE)
-    // video.set("")
-    return await userprofile.save()
+
+  async addTaleCompleted(data: CreateTalesCompletedDto, userid: string): Promise<BaseResponse> {
+
+    if (!data) {
+
+      throw new BadRequestException('null body values')
+
+    } else if (!userid) {
+
+      throw new BadRequestException('Missing ID from user')
+
+    } else {
+
+      const userprofile = await this.userProfileService.getProfile(userid);
+
+      const base_response : BaseResponse = {}
+
+      const validated_tale = userprofile.tales_completed.find(tale => data.tale_id === tale.tale_id)
+
+      if (validated_tale) {
+        //ACTUALIZAR
+        const tale_update = await this.getOneTale(validated_tale.tale_id)
+        validated_tale.times_read++
+        base_response.status = 201
+        base_response.message = "Cuento terminado anteriormente"
+        base_response.video_obtained = validated_tale.video_obtained
+        base_response.tale_title = tale_update.title
+        await userprofile.save()
+
+      } else {
+
+        let user_videos = userprofile.user_videos
+
+        let random_video = await this.userProfileService.getRandomVideo(user_videos)
+
+        const talesComplete = new this.talesCompleted({
+          tale_id: data.tale_id,
+          answered_correctly: data.answered_correctly,
+          answered_incorrectly: data.answered_incorrectly,
+          times_read: 1,
+          video_obtained: random_video
+        })
+
+        // data title
+        const new_tale_finished = await this.getOneTale(data.tale_id)
+
+        const talesCompleteSave = await talesComplete.save()
+
+        userprofile.user_videos.push( random_video )
+
+        userprofile.tales_completed.push(talesCompleteSave)
+
+        await userprofile.save()
+
+        //COINS
+        await this.walletService.addCoinsToWallet(userid);
+
+        //base response
+        base_response.status = 202
+        base_response.message = "Cuento terminado agregado correctamente"
+        base_response.video_obtained = random_video
+        base_response.tale_title = new_tale_finished.title
+      }
+
+      return base_response;
+
+    }
+
+  }
+
+  async getTalesCompleted(userId: string, page: number): Promise<BasePagination<Tales[]>> {
+
+    if (!userId) {
+
+      throw new BadRequestException('Missing ID from user')
+
+    } else if (!page) {
+
+      throw new BadRequestException('Missing number of page')
+
+    } else {
+
+      const LIMIT = 4
+
+      const userprofile = await this.userProfileService.getProfile(userId);
+
+      const userTalesCompleted = userprofile.tales_completed.map(item => item.tale_id)
+
+      const favoriteTales = userprofile.favorite_tales
+
+      const collectionSize = await this.talesModel.count({})
+
+      const allTales = await this.talesModel.find({}).skip((page - 1) * LIMIT).limit(LIMIT)
+
+      const allTalesMapped = allTales.map(item => {
+
+        if (userTalesCompleted.includes(item._id) && favoriteTales.includes(item._id)) {
+
+          return {...item.toObject(), times_read: true , added_as_favorite: true}
+
+        } else if ((userTalesCompleted.includes(item._id) && !favoriteTales.includes(item._id))) {
+
+          return {...item.toObject(), times_read: true, added_as_favorite: false}
+
+        } else if ((!userTalesCompleted.includes(item._id) && favoriteTales.includes(item._id))) {
+
+          return {...item.toObject(), times_read: false, added_as_favorite: true}
+
+        } else {
+
+          return {...item.toObject(), times_read: false, added_as_favorite: false}
+        }
+
+      })
+
+      return {
+        data: allTalesMapped,
+        currentPage: allTales.length > 0 ? page : 1,
+        lastPage: allTales.length > 0 ? Math.ceil(collectionSize / LIMIT) : 1,
+        perPage: LIMIT
+      }
+
+    }
+
   }
 
 

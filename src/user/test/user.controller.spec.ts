@@ -4,7 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { closeInMongodConnection, rootMongooseTestModule } from 'src/helpers/test-utils/mongo/MongooseTestModule';
 import { UserController } from '../user.controller';
 import { UserService } from '../user.service';
-import { CreateUserDto } from '../dtos/user.dto';
 import { UserSchema } from '../models/user.schema';
 import { ProfileUserSchema, VideoReferenceSchema } from 'src/userProfile/models/user-profile.schema';
 import { WalletSchema } from 'src/wallet/models/wallet.schema';
@@ -19,22 +18,11 @@ import { VideosService } from 'src/videos/videos.service';
 import { OutfitService } from 'src/outfit/outfit.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { new_user, new_user2 } from 'src/helpers/test-utils/fake-data/fake-data';
 
 describe('UserController', () => {
 
     let controller: UserController;
-
-    const new_user: CreateUserDto = {
-        name:"tux1",
-        email:"tux1@gmail.com",
-        password:"aeamano"
-    }
-
-    const new_user2: CreateUserDto = {
-        name:"tux2",
-        email:"tux2@gmail.com",
-        password:"aeamano"
-    }
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({

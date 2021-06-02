@@ -7,16 +7,11 @@ import { OutfitSchema } from '../models/outfit.schema';
 import { OutfitService } from '../outfit.service';
 import { CreateOutfitDto } from '../dtos/outfit.dto';
 import { ListOfSet } from 'src/avatar/interface/avatar.interface';
+import { new_outfit3 } from 'src/helpers/test-utils/fake-data/fake-data';
 
 describe('OutfitController', () => {
 
     let controller: OutfitController;
-
-    const new_outfit: CreateOutfitDto = {
-        outfit_image: 'http://zorro-tuxedo',
-        outfit_name: ListOfSet.TUXEDO,
-        price: 30,
-    }
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -34,18 +29,18 @@ describe('OutfitController', () => {
     describe('CreateOutfit', () => {
 
         it('should create an Outfit', async () => {
-            const result = await controller.createOutfit(new_outfit)
+            const result = await controller.createOutfit(new_outfit3)
             expect(result).not.toBeNull()
             expect(result._id).not.toBeNull()
-            expect(result.outfit_image).toEqual(new_outfit.outfit_image)
-            expect(result.outfit_name).toEqual(new_outfit.outfit_name)
-            expect(result.price).toEqual(new_outfit.price)
+            expect(result.outfit_image).toEqual(new_outfit3.outfit_image)
+            expect(result.outfit_name).toEqual(new_outfit3.outfit_name)
+            expect(result.price).toEqual(new_outfit3.price)
         });
 
         it('should not create an Outfit with an existing outfit_name', async () => {
             try {
 
-                await controller.createOutfit(new_outfit)
+                await controller.createOutfit(new_outfit3)
 
             } catch (error) {
 
