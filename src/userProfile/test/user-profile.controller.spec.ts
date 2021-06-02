@@ -26,7 +26,7 @@ import { buyTimeForVideo } from '../interface/uservideos.interface';
 import { TalesSchema } from 'src/tales/models/tales.schema';
 import { TalesService } from 'src/tales/tales.service';
 import { Tales } from 'src/tales/interface/tales.interface';
-import { new_user, idUser, new_wallet, new_video, new_video2, new_tale, profileUser, new_video3 } from 'src/helpers/test-utils/fake-data/fake-data';
+import { new_user, idUser, new_wallet, new_video, new_video2, new_tale, profileUser, new_video3, new_tale2 } from 'src/helpers/test-utils/fake-data/fake-data';
 
 describe('UserProfileController', () => {
 
@@ -39,7 +39,9 @@ describe('UserProfileController', () => {
 
     let wallet: Wallet
 
-    let tales: Tales
+    let tale: Tales
+
+    let tale2: Tales
 
     let tales_completed: CreateTalesCompletedDto
 
@@ -129,13 +131,12 @@ describe('UserProfileController', () => {
 
         await videoService.createVideo(new_video2)
 
-        await videoService.createVideo(new_video3)
 
         // Buy time for video data build
 
         data_buyvideo = {
             videoId: video._id.toString(),
-            coins: 5
+            coins: 50
         }
 
         data_buyvideo2 = {
@@ -147,7 +148,9 @@ describe('UserProfileController', () => {
 
         talesService = module.get<TalesService>(TalesService)
 
-        tales = await talesService.addTales(new_tale)
+        tale = await talesService.addTales(new_tale)
+
+        tale2 = await talesService.addTales(new_tale2)
 
     });
 
@@ -194,17 +197,22 @@ describe('UserProfileController', () => {
 
         it('Should return videos from a given user', async () => {
 
-            // Adding videos to test it
-            const user = await service.getProfile(req.user.userId)
+            // Adding tale as completed for testing
+            tales_completed = {
+                tale_id: tale._id.toString(),
+                answered_correctly: '2',
+                answered_incorrectly: '3'
+            }
 
-            const video1 = await service.getRandomVideo(user.user_videos)
+            await talesService.addTaleCompleted(tales_completed, req.user.userId)
 
-            user.user_videos.push(video1)
+            tales_completed = {
+                tale_id: tale2._id.toString(),
+                answered_correctly: '2',
+                answered_incorrectly: '3'
+            }
 
-            const video2 = await service.getRandomVideo(user.user_videos)
-
-            user.user_videos.push(video2)
-            await user.save()
+            await talesService.addTaleCompleted(tales_completed, req.user.userId)
 
             // Testing the controller method
 
@@ -243,24 +251,15 @@ describe('UserProfileController', () => {
 
         it('Should get Stadistics for a given user', async () => {
 
-            // Adding tale as completed for testing
-            tales_completed = {
-                tale_id: tales._id.toString(),
-                answered_correctly: '2',
-                answered_incorrectly: '3'
-            }
-
-            await talesService.addTaleCompleted(tales_completed, req.user.userId)
-
             const result = await controller.getStadistics(req)
 
             expect(result).not.toBeNull()
             expect(result.message).toEqual("Datos obtenidos correctamente")
-            expect(result.stadistics.today.today_tales_readed).toBe(1)
+            expect(result.stadistics.today.today_tales_readed).toBe(2)
             expect(result.stadistics.today.hit_percentaje_today).toBe(40)
-            expect(result.stadistics.week.week_tales_readed).toBe(1)
+            expect(result.stadistics.week.week_tales_readed).toBe(2)
             expect(result.stadistics.week.hit_percentaje_week).toBe(40)
-            expect(result.stadistics.total_tales).toBe(1)
+            expect(result.stadistics.total_tales).toBe(2)
         })
 
     })
