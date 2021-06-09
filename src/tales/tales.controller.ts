@@ -35,7 +35,7 @@ export class TalesController {
     return this.talesService.addTales(data);
   }
 
-  @Put(':id')
+  @Put('update/:id')
   updateTales(
     @Param('id') id: string,
     @Body() data: UpdateTalesDto,
@@ -43,7 +43,7 @@ export class TalesController {
     return this.talesService.updateTales(data, id);
   }
 
-  @Get(':id')
+  @Get('tale/:id')
   async getOneTale(@Param('id') id: string): Promise<Tales> {
 
     const tale = await this.talesService.getOneTale(id);
