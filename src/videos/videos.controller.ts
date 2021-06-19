@@ -4,10 +4,8 @@ import { Body, Controller, Post, UseFilters, HttpException, HttpStatus } from '@
 // Project files
 import { CreateVideoDto } from './dtos/videos.dto';
 import {VideosService} from './videos.service'
-import { BadRequestFilter } from 'src/helpers/bad-request.filter';
 
 @Controller('videos')
-@UseFilters(BadRequestFilter)
 export class VideosController {
 
     constructor(

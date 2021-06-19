@@ -5,10 +5,8 @@ import { Controller, Get, Post } from '@nestjs/common';
 // Project files
 import { CreateOutfitDto } from './dtos/outfit.dto';
 import { OutfitService } from './outfit.service';
-import { BadRequestFilter } from 'src/helpers/bad-request.filter';
 
 @Controller('outfit')
-@UseFilters(BadRequestFilter)
 export class OutfitController {
 
     constructor(

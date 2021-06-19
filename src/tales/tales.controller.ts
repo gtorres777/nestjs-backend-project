@@ -21,6 +21,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateTalesCompletedDto, CreateVideoReference } from 'src/userProfile/dtos/user-profile.dto';
 import { WalletService } from 'src/wallet/wallet.service';
 import { BadRequestFilter } from 'src/helpers/bad-request.filter';
+import { MongoExceptionFilter } from 'src/helpers/mongo-exception.filter';
 
 @Controller('tales')
 @UseFilters(BadRequestFilter)
@@ -31,6 +32,7 @@ export class TalesController {
   ) { }
 
   @Post()
+  @UseFilters(MongoExceptionFilter)
   addTales(@Body() data: CreateTalesDto): Promise<Tales> {
     return this.talesService.addTales(data);
   }

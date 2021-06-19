@@ -4,7 +4,6 @@ import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 export class BadRequestFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse();
-    console.log(exception)
-    response.status(400).json({message: exception});
+    response.status(400).json(exception);
   }
 }

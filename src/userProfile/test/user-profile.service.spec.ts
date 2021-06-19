@@ -348,6 +348,23 @@ describe('UserProfileService', () => {
 
         })
 
+        it('Should not buy time for a video if no video found for the given videoID', async () =>{
+
+            try {
+
+                /// passing just a videoId that will fail
+                await service.buyTimeForVideo(idUser_to_fail,idUser,5)
+
+            } catch (error) {
+
+                expect(error.response.error).toEqual('Not Found')
+                expect(error.response.message).toEqual('No video found for the given videoId')
+                expect(error.response.statusCode).toEqual(404)
+
+            }
+
+        })
+
         it('Should not buy time for video if doesnt have enough coins', async () =>{
 
             const result = await service.buyTimeForVideo(video._id,idUser,500)

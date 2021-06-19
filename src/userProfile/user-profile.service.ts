@@ -193,13 +193,13 @@ export class UserProfileService {
    } else {
 
      //COINS
-     const wallet = await this.walletService.substractCoinsToWallet(userId,coins);
+     const wallet = await this.walletService.checkCoins(userId,coins);
 
-     if (wallet.status == 301){
+     if (!wallet){
 
        return {
          status: 301,
-         message: wallet.message,
+         message: 'No cuenta con las monedas suficientes',
          data: await this.getAllVideos(userId)
 
        }
@@ -216,22 +216,33 @@ export class UserProfileService {
 
          const video = userprofile.user_videos.filter(item => item._videoId == videoId)[0]
 
-         // const test = new Date("2021-03-16T18:43:13.308Z");
-         const time_user_video = video.date
+         if (!video){
 
-         if(getHours(time_user_video) >= 24)
-           video.date = new Date()
-         else
-           video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
+           throw new NotFoundException('No video found for the given videoId')
 
-         video.state = SuscriptionState.ACTIVE
-         await userprofile.save()
+         } else {
 
-         return {
-           status: 201,
-           message: `Video actualizado y ${wallet.message}`,
-           data: await this.getAllVideos(userId)
+           // const test = new Date("2021-03-16T18:43:13.308Z");
+           const time_user_video = video.date
+
+           const wallet_substract = await this.walletService.substractCoinsToWallet(userId,coins);
+
+           if(getHours(time_user_video) >= 24)
+             video.date = new Date()
+           else
+             video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
+
+           video.state = SuscriptionState.ACTIVE
+           await userprofile.save()
+
+           return {
+             status: 201,
+             message: `Video actualizado y ${wallet_substract.message}`,
+             data: await this.getAllVideos(userId)
+           }
+
          }
+
 
        }
 

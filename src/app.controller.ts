@@ -5,6 +5,6 @@ export class AppController {
  
   @Get()
   getHello() {
-    return "Hello World!";
+    return "Server status OK";
   }
 }

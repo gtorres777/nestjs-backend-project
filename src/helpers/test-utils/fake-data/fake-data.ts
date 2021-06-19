@@ -56,6 +56,12 @@ export const new_outfit3: CreateOutfitDto = {
     price: 45,
 }
 
+export const new_outfit4: CreateOutfitDto = {
+    outfit_image: 'http://zorro-astronaut',
+    outfit_name: ListOfSet.ASTRONAUT,
+    price: 1,
+}
+
 export const profileUser: CreateProfileUserDto = {
     _user: idUser,
     favorite_tales: [],
@@ -189,3 +195,4 @@ export const new_tale_for_update: CreateTalesDto = {
         }
     ]
 }
+
