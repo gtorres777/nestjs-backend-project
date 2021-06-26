@@ -9,6 +9,7 @@ import { CreateTalesCompletedDto, CreateVideoReference } from 'src/userProfile/d
 import { ProfileUser, SuscriptionState, TalesCompleted, VideoReference } from 'src/userProfile/interface/user-profile.interface';
 import {BaseResponse} from 'src/helpers/BaseResponse';
 import {WalletService} from 'src/wallet/wallet.service';
+import getHours from 'src/helpers/getHours';
 
 @Injectable()
 export class TalesService {
@@ -207,6 +208,8 @@ export class TalesService {
 
       const validated_tale = userprofile.tales_completed.find(tale => data.tale_id === tale.tale_id)
 
+      const video = userprofile.user_videos.filter(item => item._videoId.toString() == validated_tale.video_obtained._videoId.toString())[0]
+
       if (validated_tale) {
         //ACTUALIZAR
         const tale_update = await this.getOneTale(validated_tale.tale_id)
@@ -215,6 +218,14 @@ export class TalesService {
         base_response.message = "Cuento terminado anteriormente"
         base_response.video_obtained = validated_tale.video_obtained
         base_response.tale_title = tale_update.title
+
+        if(getHours(video.date) >= 24)
+          video.date = new Date()
+        else
+          video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
+
+        video.state = SuscriptionState.ACTIVE
+
         await userprofile.save()
 
       } else {

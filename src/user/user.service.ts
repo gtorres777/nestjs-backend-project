@@ -28,6 +28,7 @@ export class UserService {
 
   async addUser(user: CreateUserDto): Promise<any> {
 
+    console.log("AEA",user)
     if (!user){
 
       throw new BadRequestException('null body values')
