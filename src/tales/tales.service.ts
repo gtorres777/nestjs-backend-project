@@ -208,7 +208,6 @@ export class TalesService {
 
       const validated_tale = userprofile.tales_completed.find(tale => data.tale_id === tale.tale_id)
 
-      const video = userprofile.user_videos.filter(item => item._videoId.toString() == validated_tale.video_obtained._videoId.toString())[0]
 
       if (validated_tale) {
         //ACTUALIZAR
@@ -219,6 +218,7 @@ export class TalesService {
         base_response.video_obtained = validated_tale.video_obtained
         base_response.tale_title = tale_update.title
 
+      const video = userprofile.user_videos.filter(item => item._videoId.toString() == validated_tale.video_obtained._videoId.toString())[0]
         if(getHours(video.date) >= 24)
           video.date = new Date()
         else
