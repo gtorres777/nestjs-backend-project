@@ -8,12 +8,16 @@ import { ProfileUser, VideoReference } from "./interface/user-profile.interface"
 import { buyTimeForVideo } from './interface/uservideos.interface';
 import { UserProfileService } from "./user-profile.service";
 import { BadRequestFilter } from 'src/helpers/bad-request.filter';
+import { WalletService } from 'src/wallet/wallet.service';
 
 @Controller('profile')
 @UseFilters(BadRequestFilter)
 export class UserProfileController {
 
-  constructor(private readonly userProfileService: UserProfileService) {}
+  constructor(
+    private readonly userProfileService: UserProfileService,
+    private walletService: WalletService,
+  ) {}
 
   @Post()
   addProfile(
@@ -46,7 +50,8 @@ export class UserProfileController {
     const response = await this.userProfileService.buyTimeForVideo(data.videoId, req.user.userId, data.coins) 
     return {
       message: response.message,
-      data: response.data
+      data: response.data,
+      wallet: await this.walletService.getWallet(req.user.userId)
     }
   }
 

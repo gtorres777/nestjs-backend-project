@@ -788,6 +788,7 @@ describe('EndToEndTesting (e2e)', () => {
         expect(response).not.toBeNull()
         expect(response.body.message).toEqual('Video actualizado y Monedas restadas correctamente')
         expect(response.body.data.length).toBe(1)
+        expect(response.body.wallet).not.toBeNull()
 
     });
 

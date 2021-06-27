@@ -234,6 +234,8 @@ describe('UserProfileController', () => {
             expect(result).not.toBeNull()
             expect(result.message).toBe("No cuenta con las monedas suficientes")
             expect(result.data.toString()).toContain(await controller.getVideosUser(req))
+
+            expect(result.wallet.total_coins).toBeGreaterThan(0)
         })
 
         it('Should buy time for a video that a user wants', async () => {
@@ -244,6 +246,8 @@ describe('UserProfileController', () => {
             expect(result.message).toBe("Video actualizado y Monedas restadas correctamente")
             expect(result.data.toString()).toContain((await controller.getVideosUser(req))[0])
             expect(result.data[1].time_left.toString()).not.toBe((await controller.getVideosUser(req))[0].time_left)
+
+            expect(result.wallet.total_coins).toBeGreaterThan(0)
         })
     })
 
