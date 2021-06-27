@@ -157,7 +157,7 @@ export class UserProfileService {
 
           } else {
 
-            if ((24 - hours).toString().includes("0."))
+            if ((24 - hours).toString().startsWith("0."))
               item.time_left = `${Math.round(1440 - minutes + 1)} minutos`
             else
               item.time_left = `${Math.round(24 - hours)} horas`

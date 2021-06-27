@@ -215,14 +215,16 @@ export class TalesService {
         validated_tale.times_read++
         base_response.status = 201
         base_response.message = "Cuento terminado anteriormente"
-        base_response.video_obtained = validated_tale.video_obtained
+        // base_response.video_obtained = validated_tale.video_obtained
         base_response.tale_title = tale_update.title
 
       const video = userprofile.user_videos.filter(item => item._videoId.toString() == validated_tale.video_obtained._videoId.toString())[0]
+
         if(getHours(video.date) >= 24)
           video.date = new Date()
         else
-          video.date = new Date(video.date.getTime() + (24 * 60 * 60 * 1000))
+          base_response.video_obtained = video
+
 
         video.state = SuscriptionState.ACTIVE
 
