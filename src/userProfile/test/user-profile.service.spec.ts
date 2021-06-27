@@ -239,6 +239,7 @@ describe('UserProfileService', () => {
             expect(result.state).toEqual(SuscriptionState.ACTIVE)
             expect(result.time_left).toEqual("24 horas")
             expect(result._videoId).not.toEqual(user.user_videos[0]._videoId)
+            expect(result.video_title).not.toEqual(user.user_videos[0].video_title)
 
             tales_completed = {
                 tale_id: tale2._id.toString(),

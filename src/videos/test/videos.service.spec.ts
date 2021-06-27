@@ -70,6 +70,7 @@ describe('VideosService', () => {
             expect(random_video).not.toBeNull()
             expect(random_video._VideoId).not.toBeNull()
             expect(random_video._url).not.toBeNull()
+            expect(random_video.video_title).not.toBeNull()
         })
 
     })

@@ -47,7 +47,7 @@ export class VideosService {
 
         const allVideos = await this.videoModel.find({})
         const random_video = allVideos[Math.floor(Math.random() * allVideos.length)];
-        return { _VideoId: random_video._id, _url: random_video.path }
+        return { _VideoId: random_video._id, _url: random_video.path, video_title: random_video.title }
 
     }
 

@@ -99,6 +99,7 @@ export class UserProfileService {
         const videoReference = new this.videoReferenceModel({
           _videoId: not_repeated_video_obtained._VideoId,
           _url: not_repeated_video_obtained._url,
+          video_title: not_repeated_video_obtained.video_title,
           date: new Date(),
           state: SuscriptionState.ACTIVE,
           time_left: "24 horas"
@@ -113,6 +114,7 @@ export class UserProfileService {
         const videoReference = new this.videoReferenceModel({
           _videoId: videoId._VideoId,
           _url: videoId._url,
+          video_title: videoId.video_title,
           date: new Date(),
           state: SuscriptionState.ACTIVE,
           time_left: "24 horas"

@@ -13,6 +13,10 @@ export const VideoReferenceSchema = new Schema({
     type: String,
     required: false
   },
+  video_title: {
+    type: String,
+    required: false
+  },
   date: {
     type: Date
   },

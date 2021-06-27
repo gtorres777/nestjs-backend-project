@@ -8,6 +8,7 @@ export enum SuscriptionState {
 export interface VideoReference extends Document {
   readonly _videoId: string
   _url: string
+  video_title: string
   date: Date
   state: SuscriptionState
   time_left?: string
